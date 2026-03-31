@@ -1,0 +1,32 @@
+---
+title: Shipping Clean Next.js Layouts
+description: A small checklist for layouts that scale without turning into a visual junk drawer.
+date: 2026-03-30
+published: true
+tags:
+  - Next.js
+  - Frontend
+  - Architecture
+---
+
+A layout is where product taste becomes obvious.
+
+Headers, spacing rhythm, surface depth, and responsive behavior all meet here. If the layout is weak, every page under it inherits the problem.
+
+<Callout tone="accent">
+Keep the layout shell boring. Save surprise for the content, not the chrome.
+</Callout>
+
+My baseline rule is simple: one strong hierarchy, one quiet accent, and one place for utility actions.
+
+```tsx
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="mx-auto min-h-screen max-w-6xl px-6 py-16 sm:px-10">
+      <section className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">{children}</section>
+    </main>
+  );
+}
+```
+
+If I cannot explain why a block exists, it probably should not be there.

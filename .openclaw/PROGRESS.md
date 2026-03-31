@@ -11,6 +11,10 @@
 
 **⚠️ Subagent 调用规则**：所有项目开发任务必须使用 `sessions_spawn(agentId: "project-agent")`，不要用默认 subagent（默认继承 main 的 GLM 模型）。project-agent 默认 GPT-5.4。
 
+**⚠️ 必须自测（2026-03-31 教训）**：每轮完成后必须启动 dev server 实际访问每个功能页验证。`npm run build` 通过 ≠ 功能正常！运行时错误（如 server/client 组件边界、404 路由）build 检测不到。自测方法：`npm run dev` + Playwright/curl 访问关键页面（首页、/blog、/blog/[slug]），确认无报错、无 404。
+
+**⚠️ 项目定位**：BlueBlog 是纯网页项目（部署 Vercel），不是桌面应用。截图用浏览器视口，不要用桌面壳。
+
 **核心文档**：
 - 📊 [进度文件](./PROGRESS.md)（本文件）
 - 📁 [每日任务](./tasks/)（按日期隔离的工作日志）

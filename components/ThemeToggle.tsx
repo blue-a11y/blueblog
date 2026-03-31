@@ -38,12 +38,12 @@ export function ThemeToggle() {
       size="sm"
       className="rounded-full border border-border bg-card/80 px-4 text-sm text-foreground shadow-sm backdrop-blur transition hover:bg-muted"
       onPress={toggleTheme}
-      aria-label={mounted ? `切换到${theme === "light" ? "深色" : "浅色"}主题` : "切换主题"}
+      aria-label={mounted ? `Switch to ${theme === "light" ? "dark" : "light"} mode` : "Switch theme"}
     >
       <span aria-hidden="true" className="text-base leading-none">
         {mounted ? (theme === "light" ? "🌙" : "☀️") : "◐"}
       </span>
-      <span>{mounted ? (theme === "light" ? "深色模式" : "浅色模式") : "主题切换"}</span>
+      <span>{mounted ? (theme === "light" ? "Dark mode" : "Light mode") : "Theme"}</span>
     </Button>
   );
 }

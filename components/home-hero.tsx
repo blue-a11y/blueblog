@@ -46,11 +46,10 @@ export function HomeHero() {
                   Blue
                 </h1>
                 <p className="max-w-2xl text-lg leading-8 text-foreground/88 sm:text-xl sm:leading-9">
-                  写 React、Next.js、设计系统，也写那些把复杂体验磨到顺手的前端细节。
+                  Building with React, Next.js, and design systems that make complex flows feel simple.
                 </p>
                 <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-                  这里会记录产品实现、UI 取舍、工程化经验，以及一些对 Web 该怎么做得更干净的思考。
-                  少废话，多作品；少堆装饰，多留白。
+                  Notes on product execution, UI decisions, and frontend systems shaped with less noise and better taste.
                 </p>
               </div>
             </div>
@@ -70,11 +69,11 @@ export function HomeHero() {
                 variant="secondary"
                 className="rounded-full border border-border/80 bg-card/70 px-6 backdrop-blur-sm"
                 onPress={() => {
-                  window.location.href = "mailto:zhangxuan.nyuk@gmail.com";
+                  window.location.href = "/blog";
                 }}
               >
-                <MailIcon className="size-4" />
-                Get in touch
+                <GridIcon className="size-4" />
+                Read posts
               </Button>
             </div>
 
@@ -103,7 +102,7 @@ export function HomeHero() {
                 <div className="space-y-2">
                   <Card.Title className="text-2xl tracking-[-0.03em]">Minimal by default</Card.Title>
                   <Card.Description className="text-sm leading-7 text-muted-foreground">
-                    用克制的视觉层级、柔和的渐变和稳定的排版，把注意力留给内容本身。
+                    Quiet hierarchy, soft contrast, and steady spacing that keep attention on the work.
                   </Card.Description>
                 </div>
               </Card.Header>
@@ -166,6 +165,17 @@ function MailIcon({ className }: IconProps) {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className}>
       <rect x="3" y="5" width="18" height="14" rx="3" />
       <path strokeLinecap="round" strokeLinejoin="round" d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
+
+function GridIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
     </svg>
   );
 }
