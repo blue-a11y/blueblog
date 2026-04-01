@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SiteNavbar } from "@/components/site-navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,11 +42,7 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <div className="relative min-h-screen">
-          <header className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto flex w-full max-w-6xl justify-end px-6 py-6 sm:px-10 lg:px-12">
-            <div className="pointer-events-auto">
-              <ThemeToggle />
-            </div>
-          </header>
+          <SiteNavbar />
           {children}
         </div>
       </body>

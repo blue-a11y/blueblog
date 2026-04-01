@@ -21,4 +21,4 @@ export interface Post {
   path: string;
 }
 
-export interface PostSummary extends Omit<Post, "content" | "path"> {}
+export type PostSummary = Omit<Post, "content" | "path">;
