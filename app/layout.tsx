@@ -43,7 +43,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <div className="relative min-h-screen">
           <SiteNavbar />
-          <main className="pt-20">{children}</main>
+          <div className="pt-20">{children}</div>
         </div>
       </body>
     </html>
