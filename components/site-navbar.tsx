@@ -23,18 +23,24 @@ export function SiteNavbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6">
       <div className="mx-auto max-w-5xl">
-        <nav className="mx-auto flex w-full max-w-2xl items-center justify-between rounded-full border border-border/70 bg-card/82 px-4 py-2 shadow-[0_18px_48px_-30px_var(--shadow)] backdrop-blur-xl transition-colors">
+        <nav className="relative mx-auto flex w-full max-w-2xl items-center justify-between overflow-hidden rounded-full border border-border/55 bg-background/18 px-3 py-2 shadow-[0_20px_60px_-34px_var(--shadow)] ring-1 ring-white/10 backdrop-blur-2xl transition-[background-color,border-color,box-shadow] duration-300 supports-[backdrop-filter]:bg-background/14">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/18 via-white/8 to-white/14 opacity-70 dark:from-white/10 dark:via-white/4 dark:to-white/8" />
+          <div className="pointer-events-none absolute inset-x-10 bottom-0 h-px bg-gradient-to-r from-transparent via-border/55 to-transparent" />
+
           <Link
             href="/"
-            className="mr-1 flex items-center gap-1.5 rounded-full px-2 py-1 transition-colors hover:bg-foreground/5 dark:hover:bg-foreground/10"
+            className="relative mr-1 flex items-center gap-2 rounded-full border border-transparent px-2.5 py-1.5 transition-all duration-200 hover:border-border/70 hover:bg-white/10 dark:hover:bg-white/6"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="text-sm font-bold tracking-wide text-foreground">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border/65 bg-white/24 text-[0.7rem] font-bold tracking-[0.24em] text-foreground shadow-sm backdrop-blur-md dark:bg-white/10">
               B
+            </span>
+            <span className="hidden text-[11px] font-medium tracking-[0.22em] text-foreground/62 uppercase sm:inline">
+              BlueBlog
             </span>
           </Link>
 
-          <div className="hidden items-center gap-1 md:flex">
+          <div className="relative hidden items-center gap-1 md:flex">
             {navigationItems.map((item) => {
               const active = isActive(item.href);
 
@@ -45,8 +51,8 @@ export function SiteNavbar() {
                   aria-current={active ? "page" : undefined}
                   className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
                     active
-                      ? "border-border bg-muted/70 text-foreground"
-                      : "border-transparent text-foreground/66 hover:border-border/80 hover:bg-card/88 hover:text-foreground"
+                      ? "border-border/80 bg-white/20 text-foreground shadow-[0_10px_30px_-24px_var(--shadow)] dark:bg-white/10"
+                      : "border-transparent text-foreground/62 hover:border-border/70 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8"
                   }`}
                 >
                   {item.label}
@@ -55,11 +61,11 @@ export function SiteNavbar() {
             })}
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="relative flex items-center gap-1.5">
             <ThemeToggle />
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-7 w-7 items-center justify-center rounded-full text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-white/8 text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10 md:hidden"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-site-menu"
@@ -73,9 +79,25 @@ export function SiteNavbar() {
       {menuOpen && (
         <div
           id="mobile-site-menu"
-          className="mx-auto mt-2 w-[calc(100%-2rem)] max-w-2xl rounded-2xl border border-border/70 bg-card/88 p-3 shadow-[0_22px_56px_-34px_var(--shadow)] backdrop-blur-xl transition-colors md:hidden"
+          className="relative mx-auto mt-2 w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-[1.5rem] border border-border/55 bg-background/18 p-3 shadow-[0_24px_72px_-36px_var(--shadow)] ring-1 ring-white/10 backdrop-blur-2xl transition-[background-color,border-color,box-shadow] duration-300 supports-[backdrop-filter]:bg-background/14 md:hidden"
         >
-          <div className="flex flex-col gap-1.5">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/18 via-white/8 to-white/14 opacity-70 dark:from-white/10 dark:via-white/4 dark:to-white/8" />
+
+          <div className="relative mb-2 flex items-center justify-between rounded-[1.15rem] border border-border/45 bg-white/10 px-4 py-3 dark:bg-white/6">
+            <div>
+              <p className="text-[0.65rem] font-semibold tracking-[0.28em] text-foreground/52 uppercase">
+                Navigation
+              </p>
+              <p className="mt-1 text-sm text-foreground/72">
+                Minimal, quiet, and finally not muddy.
+              </p>
+            </div>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border/55 bg-white/16 text-xs font-semibold tracking-[0.2em] text-foreground/78 dark:bg-white/10">
+              BB
+            </span>
+          </div>
+
+          <div className="relative flex flex-col gap-1.5">
             {navigationItems.map((item) => {
               const active = isActive(item.href);
 
@@ -85,10 +107,10 @@ export function SiteNavbar() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMenuOpen(false)}
-                  className={`rounded-2xl border px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                  className={`rounded-[1.15rem] border px-4 py-3 text-sm font-medium transition-all duration-200 ${
                     active
-                      ? "border-border bg-muted/80 text-foreground"
-                      : "border-transparent text-foreground/70 hover:border-border/75 hover:bg-card/92 hover:text-foreground"
+                      ? "border-border/75 bg-white/20 text-foreground shadow-[0_12px_34px_-24px_var(--shadow)] dark:bg-white/10"
+                      : "border-transparent text-foreground/70 hover:border-border/65 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8"
                   }`}
                 >
                   {item.label}
