@@ -73,7 +73,7 @@ export function AboutOverview() {
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">Skills</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {skills.map((group) => (
-              <Card key={group.title} className="border border-border/60 bg-card/60">
+              <Card key={group.title} className="border border-border/60 bg-card/90">
                 <Card.Content className="p-5">
                   <p className="mb-3 text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
                     {group.title}
@@ -99,7 +99,7 @@ export function AboutOverview() {
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">Timeline</h2>
           <div className="space-y-6">
             {timeline.map((entry) => (
-              <Card key={entry.period} className="border border-border/60 bg-card/60">
+              <Card key={entry.period} className="border border-border/60 bg-card/90">
                 <Card.Content className="flex flex-col gap-2 p-5 sm:flex-row sm:items-start sm:gap-6">
                   <span className="shrink-0 text-sm font-medium text-muted-foreground w-32">
                     {entry.period}

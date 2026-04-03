@@ -36,7 +36,7 @@ export function ThemeToggle() {
     <Button
       variant="outline"
       size="sm"
-      className="rounded-full border border-border bg-card/80 px-4 text-sm text-foreground shadow-sm backdrop-blur transition hover:bg-muted"
+      className="rounded-full border border-border bg-card/95 px-4 text-sm text-foreground shadow-sm backdrop-blur transition hover:bg-muted"
       onPress={toggleTheme}
       aria-label={mounted ? `Switch to ${theme === "light" ? "dark" : "light"} mode` : "Switch theme"}
     >

@@ -99,7 +99,7 @@ export function ProjectShowcase() {
         <div className="space-y-6">
           {filteredProjects.map((project, index) => (
             <article key={project.title} className="fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <Card className="border border-border/60 bg-card/70 backdrop-blur-xl transition-all duration-200 hover:border-border hover:shadow-[0_16px_48px_-16px_var(--shadow)]">
+              <Card className="border border-border/60 bg-card/90 backdrop-blur-xl transition-all duration-200 hover:border-border hover:shadow-[0_16px_48px_-16px_var(--shadow)]">
                 <Card.Content className="p-6 sm:p-8">
                   <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                     <div className="flex-1 space-y-4">

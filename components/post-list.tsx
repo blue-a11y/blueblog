@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Input } from "@heroui/react";
-import type { PostSummary } from "@/types/post";
+import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
+import type { BlogSearchEntry, PostSummary } from "@/types/post";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
   year: "numeric",
@@ -16,26 +17,27 @@ const LOAD_MORE_COUNT = 6;
 type PostListProps = {
   posts: PostSummary[];
   tags: string[];
+  searchIndex: BlogSearchEntry[];
 };
 
-export function PostList({ posts, tags }: PostListProps) {
+export function PostList({ posts, tags, searchIndex }: PostListProps) {
   const [activeTag, setActiveTag] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_POSTS);
 
   const normalizedQuery = query.trim().toLowerCase();
 
+  const searchLookup = useMemo(() => createSearchLookup(searchIndex), [searchIndex]);
+
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
       const matchesTag = activeTag === "all" || post.tags.includes(activeTag);
-      const matchesQuery =
-        normalizedQuery.length === 0 ||
-        [post.title, post.description, post.excerpt].some((value) =>
-          value.toLowerCase().includes(normalizedQuery),
-        );
+      const haystack = searchLookup.get(post.slug) ?? "";
+      const matchesQuery = matchesBlogSearch(haystack, normalizedQuery);
+
       return matchesTag && matchesQuery;
     });
-  }, [activeTag, normalizedQuery, posts]);
+  }, [activeTag, normalizedQuery, posts, searchLookup]);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_POSTS);
@@ -60,13 +62,27 @@ export function PostList({ posts, tags }: PostListProps) {
 
         {/* Search & Filters */}
         <div className="space-y-4 fade-in fade-in-delay-1">
-          <Input
-            aria-label="Search posts"
-            value={query}
-            placeholder="Search posts…"
-            onChange={(event) => setQuery(event.target.value)}
-            className="max-w-md"
-          />
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="space-y-2">
+              <Input
+                aria-label="Search posts"
+                value={query}
+                placeholder="Search by title, summary, or tag…"
+                onChange={(event) => setQuery(event.target.value)}
+                className="max-w-md"
+              />
+              <p className="text-sm text-muted-foreground">
+                {filteredPosts.length} result{filteredPosts.length === 1 ? "" : "s"}
+                {normalizedQuery ? <> for <span className="font-medium text-foreground">“{query.trim()}”</span></> : null}
+                {activeTag !== "all" ? <> in <span className="font-medium text-foreground">{activeTag}</span></> : null}
+              </p>
+            </div>
+
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-right">
+              Lightweight client-side search, powered by a static blog index. Fast enough without pretending to be Algolia.
+            </p>
+          </div>
+
           <div className="flex flex-wrap gap-2">
             <Button
               variant={activeTag === "all" ? "primary" : "ghost"}
@@ -103,11 +119,17 @@ export function PostList({ posts, tags }: PostListProps) {
             <p className="text-muted-foreground">No posts published yet.</p>
           </div>
         ) : filteredPosts.length === 0 ? (
-          <div className="fade-in rounded-2xl border border-dashed border-border/60 py-20 text-center">
-            <p className="text-muted-foreground">No posts match your filter.</p>
+          <div className="fade-in rounded-[28px] border border-dashed border-border/60 bg-card/50 px-6 py-16 text-center shadow-[0_24px_80px_-40px_var(--shadow)]">
+            <div className="mx-auto max-w-md space-y-3">
+              <p className="text-sm font-medium tracking-[0.22em] text-muted-foreground uppercase">No matches</p>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">Nothing surfaced for this search.</h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Try a broader keyword, another tag, or clear the filters. The index is intentionally simple, not psychic.
+              </p>
+            </div>
             <Button
               variant="secondary"
-              className="mt-4 rounded-full"
+              className="mt-6 rounded-full"
               onPress={() => { setActiveTag("all"); setQuery(""); }}
             >
               Clear filters
@@ -122,7 +144,7 @@ export function PostList({ posts, tags }: PostListProps) {
                   href={`/blog/${post.slug}`}
                   className="group block"
                 >
-                  <Card className="h-full border border-border/60 bg-card/70 backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-border hover:shadow-[0_16px_48px_-16px_var(--shadow)]">
+                  <Card className="h-full border border-border/60 bg-card/90 backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-border hover:shadow-[0_16px_48px_-16px_var(--shadow)]">
                     <Card.Content className="flex h-full flex-col gap-4 p-6">
                       <div className="flex flex-wrap gap-2">
                         {post.tags.slice(0, 2).map((tag) => (

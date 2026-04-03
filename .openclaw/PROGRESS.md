@@ -15,6 +15,12 @@
 
 **⚠️ 项目定位**：BlueBlog 是纯网页项目（部署 Vercel），不是桌面应用。截图用浏览器视口，不要用桌面壳。
 
+**🚨 PROGRESS 更新强制规则（2026-04-04 修复）**：每次 `project-agent` 或主代理完成任何实际开发任务后，必须先更新本文件，再结束任务。禁止只改代码不改 `PROGRESS.md`。最低要求：
+1. 更新当前阶段状态（待开始 / 进行中 / 接近完成 / 已完成）
+2. 把本次实际完成项打勾或写入工作日志
+3. 如果代码里已有页面/组件落地，文档必须与代码一致，不能继续写“待开始”
+4. 只有在 `PROGRESS.md` 更新完成后，才允许发送飞书总结或进入下一轮任务
+
 **核心文档**：
 - 📊 [进度文件](./PROGRESS.md)（本文件）
 - 📁 [每日任务](./tasks/)（按日期隔离的工作日志）
@@ -48,18 +54,21 @@
 - [x] 关于页（技能矩阵 + 经历时间线 + 联系方式）
 
 ### Phase 4：风格实验室 + 交互 Demo
-**状态**：📋 待开始 | **目标**：3-4 天
+**状态**：✅ 已完成 | **目标**：3-4 天 | **开始日期**：2026-04-02 | **完成日期**：2026-04-04
 
-- [ ] HeroUI 组件实际使用展示页
-- [ ] 交互式 Demo（拖拽排序、实时搜索等）
-- [ ] 主题切换交互（明/暗实时预览）
+- [x] HeroUI 组件实际使用展示页（`/components-examples`）
+- [x] 交互式 Demo（`/playground`：拖拽排序、实时搜索等）
+- [x] 风格展示页（`/showcase`）
+- [x] 站点导航视觉优化（active 态、玻璃态背景、透明模糊、动效回归修复）
+- [x] 主题切换交互实验室的完整验收（明/暗实时预览、切换动画、配置体验）
+- [x] Phase 4 全量验收（响应式 / build / 页面一致性 / 截图归档）
 
 ### Phase 5：SEO + RSS + 搜索 + 性能优化 + 部署
-**状态**：📋 待开始 | **目标**：2-3 天
+**状态**：🟡 进行中（SEO / RSS / 搜索最小可用版已落地，完成收尾验证并进入性能与部署准备） | **目标**：2-3 天 | **开始日期**：2026-04-04
 
-- [ ] SEO 优化（meta、sitemap、robots.txt）
-- [ ] RSS 生成
-- [ ] 全文搜索（客户端索引）
+- [x] SEO 基线（站点级 metadata、canonical、Open Graph / Twitter、sitemap、robots.txt）
+- [x] RSS 生成
+- [x] 全文搜索（最小可用版：静态 JSON 索引 + 客户端标题/摘要/标签搜索）
 - [ ] 性能优化（ISR、图片懒加载、Bundle 分析）
 - [ ] Vercel 部署 + 自定义域名配置
 
@@ -70,8 +79,8 @@
 | Phase 1 完成（首页可预览） | 2026-03-30 | ✅ 已完成 |
 | Phase 2 完成（博客系统可用） | 2026-04-08 | ✅ 已完成（2026-03-31） |
 | Phase 3 完成（内容页完善） | 2026-04-11 | ✅ 已完成（2026-04-01） |
-| Phase 4 完成（风格实验室） | 2026-04-15 | 📋 待开始 |
-| Phase 5 完成（正式上线） | 2026-04-18 | 📋 待开始 |
+| Phase 4 完成（风格实验室） | 2026-04-15 | ✅ 已完成（2026-04-04） |
+| Phase 5 完成（正式上线） | 2026-04-18 | 🟡 进行中 |
 
 ## 📝 工作日志
 
@@ -83,6 +92,58 @@
 - 完成 **视觉氛围强化**：补充首页微妙网格背景、渐变光晕、卡片漂浮动画，并兼容浅/深色主题与 reduced motion。
 - 最终验证通过：`npm run build` ✅。
 - Phase 1 正式收尾，下一阶段进入 **Phase 2：博客系统（MDX + 列表 + 详情 + 代码高亮）**。
+
+### 2026-04-03（周五）22:30 — Phase 4 记录修正：功能主体已完成，进入验收/收尾
+- 回看代码确认，Phase 4 的主要页面与组件其实已落地：`/components-examples`、`/playground`、`/showcase` 均已存在并有对应组件实现。
+- 说明此前 `PROGRESS.md` 没有及时同步，多次任务执行后的真实产出没有完整回填到文档，这是文档滞后，不是代码没做。
+- 今日使用 `project-agent` 完成多轮导航栏样式优化，确认 OpenAI `gpt-5.4` 链路恢复可用。
+- `components/site-navbar.tsx` 完成 active 态重做：从过重的实心高亮调整为更克制的浅底 + 细边框方案。
+- 完成导航玻璃态重构：桌面与移动端统一为透明 + 模糊的 glass 风格，并补充更轻的高光/边框层次。
+- 修复内容区“发白/透明”回归：定位到 `app/layout.tsx` 与 `app/globals.css` 中嵌套 `main` + page-enter/fade-in 双重 opacity 动画叠加的问题，已改为不再操作 opacity，只保留轻微位移/blur。
+- 已完成本地构建与截图验证，多次生成首页 / Blog 页桌面与移动端截图，最近一版导航玻璃态截图位于 `.openclaw/artifacts/` 下。
+- 结论：Phase 4 不应再标记为“刚开始”，当前更准确的状态是 **主体功能已完成，进入验收 / 收尾阶段**。
+- 下一步任务应聚焦：**Phase 4 全量验收、主题切换实验室补完、统一样式与响应式检查，然后准备切入 Phase 5**。
+
+### 2026-04-04（周六）04:28 — Phase 5 第1轮：SEO 基线落地
+- 新增 `lib/site.ts` 统一站点 SEO 配置：站点 URL、标题、描述、关键词、导航路由、OG 图生成地址全部集中管理，避免 metadata 到处散着写。
+- 重构 `app/layout.tsx` 的根 metadata：补齐 `metadataBase`、标题模板、默认 description、keywords、authors、canonical、Open Graph、Twitter、robots 指令。
+- 为 `/blog`、`/blog/[slug]`、`/about`、`/projects`、`/playground`、`/showcase`、`/components-examples` 补齐页面级 metadata，统一 canonical 与分享卡片信息；同时修正原先把 `BlueBlog` 硬编码进页面 title 导致模板重复拼接的问题。
+- 新增 `app/sitemap.ts` 与 `app/robots.ts`：自动输出静态页面 + 已发布博客文章的 sitemap，并在 robots.txt 中声明 sitemap 入口。
+- 新增 `app/opengraph-image.tsx` 与 `app/twitter-image.tsx`：生成站点级分享图，避免外链分享时只剩秃头标题。
+- 自测通过：`npm run lint` ✅、`npm run build` ✅；启动 `npm run dev` 后实测访问 `/`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/about`、`/projects`、`/robots.txt`、`/sitemap.xml` 均返回 200；额外验证 `/opengraph-image` 与 `/twitter-image` 均返回 `image/png`。
+- 结论：Phase 5 已正式启动，SEO 基线已落地，下一轮优先补 RSS 或客户端全文搜索，别再让站点只有壳没有索引。
+
+### 2026-04-04（周六）04:52 — Phase 5 第2轮：RSS feed 落地
+- 新增 `app/feed.xml/route.ts`，基于 `getPostSummaries()` 动态生成 `/feed.xml`，输出已发布文章的 RSS 2.0 feed，并补齐 `atom:link`、`guid`、`pubDate`、`category`、缓存头与 1 小时 revalidate。
+- 更新 `lib/site.ts`：增加 `feedPath` 与 `getFeedUrl()`，把 feed 入口纳入站点级配置，后续别再到处手写 `/feed.xml`。
+- 更新 `app/layout.tsx` 与 `app/blog/page.tsx` 的 metadata alternates，为根页面与博客列表声明 `application/rss+xml`，让浏览器和阅读器更容易发现订阅入口。
+- 自测通过：`npm run lint` ✅、`npm run build` ✅；启动 `npm run dev` 后实际访问 `http://localhost:3002/feed.xml`，确认返回 `200`、`content-type: application/rss+xml; charset=utf-8`，并检查 XML 中已包含站点级 channel 信息、文章链接、发布日期与标签分类；同时回归验证 `/blog` 返回 `200`。
+- 结论：Phase 5 的 RSS 子项已完成。下一轮优先做博客全文搜索的最小可用版本，别继续在边角料上打转。
+
+### 2026-04-04（周六）05:30 — Phase 5 第3轮：全文搜索最小可用版落地
+- 新增 `app/search-index.json/route.ts` 与 `lib/search.ts`，基于已发布文章生成静态 JSON 搜索索引，输出 `generatedAt`、`total` 与文章标题/描述/摘要/标签字段，给客户端搜索和后续搜索增强留出稳定入口。
+- 新增 `lib/blog-search.ts` 与 `types/post.ts` 中的 `BlogSearchEntry` 类型，把搜索文本拼接与匹配逻辑收口，避免搜索规则散落在组件里变成一锅粥。
+- 重构 `app/blog/page.tsx` 与 `components/post-list.tsx`：博客页改为同时加载文章列表、标签和搜索索引；客户端搜索现在覆盖标题、描述、摘要和标签，并补上结果计数、查询态文案与更像样的空状态。
+- 保持页面气质克制：搜索区仍是单输入框 + 标签筛选，没有硬塞复杂高亮、排序器或大而无当的面板。
+- 自测通过：`npm run lint` ✅、`npm run build` ✅；`npm run dev -- --port 3003` 后实测 `/blog` 返回 `200`，页面已渲染搜索说明与结果计数；`/search-index.json` 返回 `200`，包含 2 篇已发布文章索引；额外用脚本验证搜索命中：`next` 仅返回 `Shipping Clean Next.js Layouts`、`ux` 命中 `Designing Silent Interfaces`、无匹配关键词返回空数组，对应空状态文案已存在于页面。
+- 结论：Phase 5 的搜索子项最小可用版已完成。下一轮该去做性能优化和部署准备，别再把博客发现链路拖着不收尾。
+
+### 2026-04-04（周六）05:55 — Phase 5 第4轮：收尾验证与归档
+- 完成最终构建验证：在当前代码基线上再次执行 `npm run build` ✅，确认 SEO、RSS、搜索与原有页面路由都能稳定产出。
+- 完成运行态路由回归：启动 `npm run dev -- --port 3004` 后实测 `/`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/feed.xml`、`/search-index.json`、`/robots.txt`、`/sitemap.xml` 全部返回 `200`，对应内容类型正常。
+- 完成本轮截图归档：新增 `.openclaw/artifacts/2026-04-04-round4/`，保存 `blog-search-desktop.png`、`blog-search-mobile.png`、`feed-desktop.png`，分别覆盖博客搜索桌面 / 移动视图与 RSS feed 页面。
+- 当前 Phase 5 已完成的可见产物：站点级 SEO 基线、动态 `feed.xml`、静态搜索索引与博客搜索最小可用版均已落地并通过本轮回归。
+- 当前未完成项保持不变：性能优化（缓存 / 图片 / bundle）与 Vercel 部署 / 域名接入仍待下一轮推进。
+- 结论：Phase 5 已完成第一批高价值基础设施与发现链路收尾，项目现在适合转入性能收口和上线准备，不要再重复折腾已经验收过的基础功能。
+
+### 2026-04-04（周六）04:00 — Phase 4 完成验收与文案收尾
+- 完成 `/showcase` 文案与验收面板重构：将主题切换实验室的可见文案统一为简洁专业英文，保留 HeroUI v3 compound pattern、实时主题预览、表单反馈与完成度展示。
+- 完成 `/components-examples` 可见 UI 文案清理：将展示页中的中文提示、表单说明、状态反馈、拖拽操作与检查面板统一切换为英文，避免开发吐槽文案直接暴露到用户界面。
+- `app/layout.tsx` 的 `lang` 已调整为 `en`，与当前 Phase 4 页面英文 UI 保持一致。
+- 完成 Phase 4 验收：执行 `npm run lint` ✅、`npm run build` ✅。
+- 完成桌面 / 移动端截图归档：`/showcase`、`/components-examples`、`/playground` 截图已保存至 `.openclaw/artifacts/2026-04-04-round1/`。
+- 本轮验收口径：重点确认主题预览按钮可切换明 / 暗模式、关键卡片和表单在两种主题下层级清晰，且三张 Phase 4 页面均通过桌面 / 移动端截图检查。
+- 结论：Phase 4 收尾完成，下一阶段可切入 Phase 5（SEO / RSS / 搜索 / 性能 / 部署）。
 
 ### 2026-04-01（周三）06:00 — Phase 3 完成收尾
 - 核查 `app/projects/page.tsx` 与 `app/about/page.tsx`，确认项目展示页和关于页均已落地并挂接到独立路由。

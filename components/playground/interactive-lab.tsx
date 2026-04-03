@@ -117,7 +117,7 @@ export function InteractiveLab() {
               {filteredCards.map((card) => (
                 <Card
                   key={card.id}
-                  className="border border-border/60 bg-card/70 transition-all duration-200 hover:-translate-y-0.5 hover:border-border"
+                  className="border border-border/60 bg-card/90 transition-all duration-200 hover:-translate-y-0.5 hover:border-border"
                 >
                   <Card.Content className="p-4 space-y-3">
                     <div className="flex items-start justify-between gap-2">
@@ -141,7 +141,7 @@ export function InteractiveLab() {
           {/* Sidebar: Theme + Drag */}
           <div className="space-y-6 fade-in fade-in-delay-2">
             {/* Theme Toggle */}
-            <Card className="border border-border/60 bg-card/70">
+            <Card className="border border-border/60 bg-card/90">
               <Card.Content className="p-5 space-y-4">
                 <p className="text-sm font-medium text-foreground">Theme</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -167,7 +167,7 @@ export function InteractiveLab() {
             </Card>
 
             {/* Drag reorder */}
-            <Card className="border border-border/60 bg-card/70">
+            <Card className="border border-border/60 bg-card/90">
               <Card.Content className="p-5 space-y-3">
                 <p className="text-sm font-medium text-foreground">Drag to reorder</p>
                 {cards.map((card, i) => (

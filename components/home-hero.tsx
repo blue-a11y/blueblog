@@ -18,7 +18,7 @@ export function HomeHero() {
         <div className="flex w-full flex-col gap-10">
           <div className="space-y-8">
             <div className="fade-in space-y-6">
-              <span className="inline-flex rounded-full border border-border/60 bg-card/60 px-3.5 py-1.5 text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase backdrop-blur-sm">
+              <span className="inline-flex rounded-full border border-border/60 bg-card/90 px-3.5 py-1.5 text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase backdrop-blur-sm">
                 Frontend Engineer
               </span>
 
@@ -47,7 +47,7 @@ export function HomeHero() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="rounded-full border border-border/60 bg-card/60 px-7 backdrop-blur-sm"
+                className="rounded-full border border-border/60 bg-card/90 px-7 backdrop-blur-sm"
                 onPress={() => window.open("https://github.com/zhangxuan", "_blank", "noopener,noreferrer")}
               >
                 GitHub

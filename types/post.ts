@@ -22,3 +22,5 @@ export interface Post {
 }
 
 export type PostSummary = Omit<Post, "content" | "path">;
+
+export type BlogSearchEntry = Pick<PostSummary, "slug" | "title" | "description" | "excerpt" | "tags">;

@@ -35,33 +35,33 @@ const spotlightComponents: ComponentSpotlight[] = [
   {
     name: "Card",
     category: "Layout",
-    summary: "Compound pattern 直接拿来做信息分组，结构清楚，不用写一堆屎 props。",
+    summary: "Use compound structure for clear grouping, clean hierarchy, and readable layouts.",
     status: "Ready",
   },
   {
     name: "Button",
     category: "Action",
-    summary: "语义化 variant + onPress，交互规范总算像点样子。",
+    summary: "Semantic variants with onPress make action priority and feedback feel consistent.",
     status: "Interactive",
   },
   {
     name: "TextField",
     category: "Forms",
-    summary: "Label / Description / FieldError 一套齐活，可访问性不用再手搓。",
+    summary: "Label, Description, and FieldError provide accessible form structure out of the box.",
     status: "Interactive",
   },
   {
     name: "ProgressBar",
     category: "Feedback",
-    summary: "用来展示上传、完成度、流程进度，比纯文字靠谱。",
+    summary: "Useful for upload progress, completion checks, and process visibility.",
     status: "Preview",
   },
 ];
 
 const quickActions = [
-  { label: "预览卡片层级", variant: "primary" as const },
-  { label: "切换表单状态", variant: "secondary" as const },
-  { label: "查看主题兼容", variant: "outline" as const },
+  { label: "Review card hierarchy", variant: "primary" as const },
+  { label: "Inspect form states", variant: "secondary" as const },
+  { label: "Check theme coverage", variant: "outline" as const },
 ];
 
 export function ShowcaseStudio() {
@@ -69,7 +69,9 @@ export function ShowcaseStudio() {
   const [mounted, setMounted] = useState(false);
   const [activeAction, setActiveAction] = useState<string>(quickActions[0].label);
   const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("我在检查 HeroUI v3 的展示页，别把组件写成一锅粥。");
+  const [notes, setNotes] = useState(
+    "Reviewing the HeroUI v3 showcase for hierarchy, theme coverage, and interaction quality.",
+  );
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
@@ -86,12 +88,14 @@ export function ShowcaseStudio() {
   const filteredSpots = useMemo(() => {
     const keyword = activeAction.toLowerCase();
 
-    if (keyword.includes("主题")) {
+    if (keyword.includes("theme")) {
       return spotlightComponents.filter((item) => item.category !== "Action");
     }
 
-    if (keyword.includes("表单")) {
-      return spotlightComponents.filter((item) => item.category === "Forms" || item.category === "Feedback");
+    if (keyword.includes("form")) {
+      return spotlightComponents.filter(
+        (item) => item.category === "Forms" || item.category === "Feedback",
+      );
     }
 
     return spotlightComponents;
@@ -100,7 +104,7 @@ export function ShowcaseStudio() {
   return (
     <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-6 pb-20 pt-32 sm:px-10 lg:px-12">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start">
-        <Card className="border border-border/70 bg-card/88 shadow-[0_32px_120px_-64px_var(--shadow)] backdrop-blur">
+        <Card className="border border-border/70 bg-card shadow-[0_32px_120px_-64px_var(--shadow)] backdrop-blur transition-colors duration-300">
           <Card.Header className="gap-4 border-b border-border/60 pb-6">
             <div className="flex flex-wrap items-center gap-3">
               <Chip variant="soft">/showcase</Chip>
@@ -114,8 +118,8 @@ export function ShowcaseStudio() {
                 HeroUI Showcase Studio
               </Card.Title>
               <Card.Description className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-                这页专门拿来展示 HeroUI v3 组件怎么在 BlueBlog 里落地：有卡片结构、按钮交互、
-                TextField 组合，还有主题兼容和响应式布局。Provider？不用。v2 那套老毛病别带进来。
+                This page demonstrates how HeroUI v3 lands inside BlueBlog with production-style cards,
+                button interactions, TextField patterns, responsive structure, and live theme previews.
               </Card.Description>
             </div>
           </Card.Header>
@@ -134,18 +138,19 @@ export function ShowcaseStudio() {
                 ))}
               </div>
 
-              <Card variant="transparent" className="border border-border/70 bg-background/70">
+              <Card variant="transparent" className="border border-border/70 bg-background/90">
                 <Card.Header>
-                  <Card.Title className="text-lg">组件观察台</Card.Title>
+                  <Card.Title className="text-lg">Component spotlight</Card.Title>
                   <Card.Description>
-                    当前聚焦：{activeAction}。不同按钮会切换右侧列表，证明这页不只是摆拍。
+                    Current focus: {activeAction}. Each action filters the list so the page behaves like a real
+                    review surface, not a static mock.
                   </Card.Description>
                 </Card.Header>
                 <Card.Content className="grid gap-3 sm:grid-cols-2">
                   {filteredSpots.map((item) => (
                     <article
                       key={item.name}
-                      className="rounded-2xl border border-border/65 bg-card/75 p-4 transition-colors hover:border-accent/40"
+                      className="rounded-2xl border border-border/65 bg-card/95 p-4 transition-colors hover:border-accent/40"
                     >
                       <div className="mb-3 flex items-center justify-between gap-3">
                         <div>
@@ -154,7 +159,15 @@ export function ShowcaseStudio() {
                             {item.category}
                           </p>
                         </div>
-                        <Chip variant={item.status === "Interactive" ? "primary" : item.status === "Preview" ? "soft" : "secondary"}>
+                        <Chip
+                          variant={
+                            item.status === "Interactive"
+                              ? "primary"
+                              : item.status === "Preview"
+                                ? "soft"
+                                : "secondary"
+                          }
+                        >
                           {item.status}
                         </Chip>
                       </div>
@@ -165,11 +178,12 @@ export function ShowcaseStudio() {
               </Card>
             </div>
 
-            <Card variant="transparent" className="border border-border/70 bg-background/75">
+            <Card variant="transparent" className="border border-border/70 bg-background/95">
               <Card.Header>
-                <Card.Title className="text-lg">主题兼容速查</Card.Title>
+                <Card.Title className="text-lg">Theme preview check</Card.Title>
                 <Card.Description>
-                  直接切换预期主题，检查语义色和页面文案在明暗模式下有没有翻车。
+                  Switch the active theme to review semantic color usage, readability, and component balance in
+                  both modes.
                 </Card.Description>
               </Card.Header>
               <Card.Content className="space-y-4">
@@ -194,16 +208,16 @@ export function ShowcaseStudio() {
                   </Button>
                 </div>
                 <div className="rounded-2xl border border-border/65 bg-card/85 p-4">
-                  <p className="text-sm font-medium text-foreground">当前建议</p>
+                  <p className="text-sm font-medium text-foreground">Review note</p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {theme === "dark"
-                      ? "暗色下重点看边框、阴影和 muted 文案是否还清晰。写 UI 别只盯着亮色图。"
-                      : "亮色下重点看层级和按钮对比度，别做成一坨发灰的假高级。"}
+                      ? "In dark mode, review borders, shadows, and muted copy to make sure the hierarchy stays readable."
+                      : "In light mode, review elevation and button contrast so the layout stays crisp and intentional."}
                   </p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>展示页完成度</span>
+                    <span>Showcase completion</span>
                     <span>{completion}%</span>
                   </div>
                   <ProgressBar aria-label="Showcase completion" value={completion} />
@@ -213,11 +227,11 @@ export function ShowcaseStudio() {
           </Card.Content>
         </Card>
 
-        <Card className="border border-border/70 bg-card/88 shadow-[0_28px_90px_-60px_var(--shadow)] backdrop-blur">
+        <Card className="border border-border/70 bg-card shadow-[0_28px_90px_-60px_var(--shadow)] backdrop-blur transition-colors duration-300">
           <Card.Header className="border-b border-border/60 pb-5">
-            <Card.Title className="text-2xl font-semibold">交互表单 Demo</Card.Title>
+            <Card.Title className="text-2xl font-semibold">Interactive form demo</Card.Title>
             <Card.Description className="leading-6">
-              用 TextField compound pattern 搭个可交互表单，顺便证明 onPress 和校验都正常工作。
+              Use the TextField compound pattern to validate form structure, helper text, and lightweight feedback in one place.
             </Card.Description>
           </Card.Header>
           <Card.Content className="space-y-5 py-6">
@@ -229,37 +243,44 @@ export function ShowcaseStudio() {
               value={email}
               onChange={setEmail}
             >
-              <Label>通知邮箱</Label>
+              <Label>Notification email</Label>
               <Input placeholder="you@blueblog.dev" />
-              <Description>输入一个带 @ 的邮箱，别把基础格式都写炸了。</Description>
-              <FieldError>{emailIsInvalid ? "邮箱格式不对，至少加个 @ 吧。" : ""}</FieldError>
+              <Description>Enter a valid email address to review helper text and error handling.</Description>
+              <FieldError>{emailIsInvalid ? "Enter an email address with @." : ""}</FieldError>
             </TextField>
 
             <TextField className="w-full" name="showcase-notes">
-              <Label>展示备注</Label>
+              <Label>Showcase notes</Label>
               <TextArea
                 rows={5}
-                placeholder="记录这页准备展示什么组件…"
+                placeholder="Summarize what this showcase should validate…"
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
               />
-              <Description>字符数：{notes.trim().length} / 200</Description>
+              <Description>Characters: {notes.trim().length} / 200</Description>
             </TextField>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <Button variant="primary" onPress={() => setNotes("HeroUI v3 展示页已准备好，结构、交互、主题都过了一遍。")}>
-                填充示例内容
+              <Button
+                variant="primary"
+                onPress={() =>
+                  setNotes(
+                    "HeroUI v3 showcase ready for review across structure, interaction, and theme states.",
+                  )
+                }
+              >
+                Fill sample notes
               </Button>
-              <Button variant="ghost" onPress={() => setNotes("")}>清空备注</Button>
+              <Button variant="ghost" onPress={() => setNotes("")}>Clear notes</Button>
             </div>
           </Card.Content>
           <Card.Footer className="border-t border-border/60 pt-5">
             <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm font-medium text-foreground">当前动作</p>
+                <p className="text-sm font-medium text-foreground">Current action</p>
                 <p className="text-sm text-muted-foreground">{activeAction}</p>
               </div>
-              <Button variant="secondary" onPress={() => setActiveAction("查看主题兼容")}>同步右侧状态</Button>
+              <Button variant="secondary" onPress={() => setActiveAction("Check theme coverage")}>Sync panel state</Button>
             </div>
           </Card.Footer>
         </Card>
@@ -268,19 +289,19 @@ export function ShowcaseStudio() {
       <div className="grid gap-4 md:grid-cols-3">
         {[
           {
-            title: "无 Provider",
-            detail: "HeroUI v3 直接用，不要再塞个 Provider 装忙。",
+            title: "No provider",
+            detail: "HeroUI v3 works without an application provider in this setup.",
           },
           {
             title: "Compound pattern",
-            detail: "Card.Header / Card.Content / TextField + Label + Input，全都按规范来。",
+            detail: "Card.Header, Card.Content, TextField, Label, and Input follow the v3 compound pattern.",
           },
           {
-            title: "响应式布局",
-            detail: "手机单列、桌面双栏，间距和层级都没偷工减料。",
+            title: "Responsive layout",
+            detail: "Single-column mobile and two-column desktop layouts keep spacing and hierarchy aligned.",
           },
         ].map((item) => (
-          <Card key={item.title} variant="transparent" className="border border-border/70 bg-card/76">
+          <Card key={item.title} variant="transparent" className="border border-border/70 bg-card/76 transition-colors duration-300">
             <Card.Header>
               <Card.Title className="text-base">{item.title}</Card.Title>
               <Card.Description className="leading-6">{item.detail}</Card.Description>

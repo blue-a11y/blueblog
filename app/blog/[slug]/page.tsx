@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPostBySlug, getPostSummaries } from "@/lib/posts";
+import { getOgImageUrl, getSiteUrl } from "@/lib/site";
 import { renderMdx } from "@/lib/mdx";
 
 type BlogPostPageProps = {
@@ -34,9 +35,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  const title = `${post.title} · BlueBlog`;
+  const title = post.title;
   const description = post.description;
   const url = `/blog/${post.slug}`;
+  const absoluteUrl = getSiteUrl(url);
+  const imageUrl = getOgImageUrl(post.title);
 
   return {
     title,
@@ -49,14 +52,23 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title,
       description,
       type: "article",
-      url,
+      url: absoluteUrl,
       publishedTime: `${post.date}T00:00:00.000Z`,
       tags: post.tags,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${post.title} open graph image`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [imageUrl],
     },
   };
 }
@@ -75,7 +87,7 @@ function NavCard({
   cta?: string;
 }) {
   return (
-    <div className="flex min-h-44 flex-col gap-4 rounded-[1.75rem] border border-border/80 bg-card/75 px-6 py-5 backdrop-blur-xl">
+    <div className="flex min-h-44 flex-col gap-4 rounded-[1.75rem] border border-border/80 bg-card/95 px-6 py-5 backdrop-blur-xl">
       <div className="space-y-2 border-b border-border/70 pb-4">
         <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">{eyebrow}</p>
         <h2 className="text-xl tracking-[-0.04em] text-foreground">{title}</h2>
@@ -84,7 +96,7 @@ function NavCard({
       {href && cta ? (
         <Link
           href={href}
-          className="mt-auto inline-flex w-fit items-center rounded-full border border-border/80 bg-card/70 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
+          className="mt-auto inline-flex w-fit items-center rounded-full border border-border/80 bg-card/90 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
         >
           {cta}
         </Link>
@@ -110,7 +122,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <nav className="flex flex-wrap items-center justify-between gap-4">
           <Link
             href="/blog"
-            className="inline-flex items-center rounded-full border border-border/80 bg-card/70 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
+            className="inline-flex items-center rounded-full border border-border/80 bg-card/90 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
           >
             Back to blog
           </Link>
@@ -123,7 +135,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-border/80 bg-card/75 px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase"
+                  className="rounded-full border border-border/80 bg-card/95 px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase"
                 >
                   {tag}
                 </span>
@@ -140,7 +152,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
 
-          <div className="rounded-2xl border border-border/50 bg-card/50 p-6 shadow-[0_8px_40px_-16px_var(--shadow)] backdrop-blur-xl sm:p-8 lg:p-10">
+          <div className="rounded-2xl border border-border/50 bg-card p-6 shadow-[0_8px_40px_-16px_var(--shadow)] backdrop-blur-xl sm:p-8 lg:p-10">
             <div className="prose-shell">{content}</div>
           </div>
         </article>
