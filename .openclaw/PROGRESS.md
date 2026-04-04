@@ -71,6 +71,7 @@
 - [x] 全文搜索（最小可用版：静态 JSON 索引 + 客户端标题/摘要/标签搜索）
 - [x] 性能优化（ISR / 缓存策略已落地，首页与博客列表客户端包袱已明显减轻；图片项暂未深挖，因当前站内几乎无内容图片）
 - [ ] Vercel 部署 + 自定义域名配置（首次 production deploy 已成功；真正可用的线上别名为 `https://blueblog-theta.vercel.app`。原先误把 `app/` 子目录连成独立项目导致整站 404，已改为从仓库根目录重新 link 到 `blues-projects-90e3f68b/blueblog` 并修复上线。自定义域名仍待用户决定域名 / DNS 权限后继续）
+- [x] 主题颜色回归修复（已修正首页、/blog、文章页在明/暗主题下的弱对比 token；重点修复次级文字、边框、卡片层级与文章正文容器层次）
 
 ## 🎯 里程碑
 
@@ -157,6 +158,13 @@
 - 完成 **线上关键路径实测**：使用 Python 实际请求 `https://blueblog-theta.vercel.app/`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/feed.xml`、`/search-index.json`，全部返回 `200`，内容类型分别为 HTML / RSS XML / JSON，说明首页、博客列表、文章详情、RSS、搜索索引都在线。
 - 构建链路补充说明：`vercel deploy` CLI 末尾两次出现 `socket hang up`，但 `npx vercel inspect blueblog-17nzgbht1-blues-projects-90e3f68b.vercel.app` 已确认部署最终状态为 `Ready`，属于 CLI 轮询阶段抽风，不影响最终上线结果。
 - 自定义域名暂未推进：当前仍需要用户明确要绑定哪个域名，以及是否具备对应 DNS 管理权限；这个不能替用户瞎猜。
+
+### 2026-04-04（周六）14:55 — Phase 5 第8轮：主题颜色回归修复
+- 按要求先启动 `npm run dev -- --port 3020`，用 Playwright 实际截图检查首页、`/blog`、文章页在明/暗主题下的真实渲染，而不是靠读代码瞎猜。
+- 定位到本轮真正的问题不在布局，而在 **主题 token 对比度偏弱**：亮色模式里次级文字 / 边框 / 卡片层级过淡，暗色模式里卡片、正文容器与页面背景过近，文章页正文卡和代码块像糊在一起。
+- 已克制修复 `app/globals.css` 的核心颜色 token：仅增强 `surface` / `card` / `muted` / `muted-foreground` / `border` / `shadow` 在明暗两套主题下的对比度，不改站点整体气质。
+- 额外微调 `app/blog/[slug]/page.tsx`：将文章正文大容器从 `bg-card` 调整为 `bg-surface/96`，并稍微提高边框与阴影层级，让正文卡和内部代码块终于不再糊成一坨。
+- 回归验证通过：再次截图确认首页、`/blog`、文章页在明/暗主题下都可读性更稳；`npm run lint` ✅、`npm run build` ✅。
 
 ### 2026-04-04（周六）04:00 — Phase 4 完成验收与文案收尾
 - 完成 `/showcase` 文案与验收面板重构：将主题切换实验室的可见文案统一为简洁专业英文，保留 HeroUI v3 compound pattern、实时主题预览、表单反馈与完成度展示。

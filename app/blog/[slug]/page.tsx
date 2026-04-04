@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
 
-          <div className="rounded-2xl border border-border/50 bg-card p-6 shadow-[0_8px_40px_-16px_var(--shadow)] backdrop-blur-xl sm:p-8 lg:p-10">
+          <div className="rounded-2xl border border-border/60 bg-surface/96 p-6 shadow-[0_10px_44px_-20px_var(--shadow)] backdrop-blur-xl sm:p-8 lg:p-10">
             <div className="prose-shell">{content}</div>
           </div>
         </article>
