@@ -64,7 +64,7 @@
 - [x] Phase 4 全量验收（响应式 / build / 页面一致性 / 截图归档）
 
 ### Phase 5：SEO + RSS + 搜索 + 性能优化 + 部署
-**状态**：🟡 接近完成（SEO / RSS / 搜索 / 性能优化 / production 部署 / Speed Insights / 正式身份信息统一替换 / 内容充实度收尾已落地；仍剩自定义域名稳定性待用户提供域名或 DNS 权限） | **目标**：2-3 天 | **开始日期**：2026-04-04
+**状态**：🟡 接近完成（SEO / RSS / 搜索 / 性能优化 / production 部署 / Speed Insights / 正式身份信息统一替换 / 内容充实度收尾已落地；ThemeToggle 运行时与构建残留问题已修平；仍剩自定义域名稳定性待用户提供域名或 DNS 权限） | **目标**：2-3 天 | **开始日期**：2026-04-04
 
 - [x] SEO 基线（站点级 metadata、canonical、Open Graph / Twitter、sitemap、robots.txt）
 - [x] RSS 生成
@@ -73,6 +73,7 @@
 - [ ] Vercel 部署 + 自定义域名配置（首次 production deploy 已成功；真正可用的线上别名为 `https://blueblog-theta.vercel.app`。原先误把 `app/` 子目录连成独立项目导致整站 404，已改为从仓库根目录重新 link 到 `blues-projects-90e3f68b/blueblog` 并修复上线。自定义域名仍待用户决定域名 / DNS 权限后继续）
 - [x] 内容充实度收尾（已补齐并发布第 3、4 篇示例文章，博客内容系统不再只有两篇样例撑门面）
 - [x] 主题颜色回归修复（已修正首页、/blog、文章页在明/暗主题下的弱对比 token；重点修复次级文字、边框、卡片层级与文章正文容器层次）
+- [x] 收尾构建修复（已清理 `components/common/ThemeToggle.tsx` 中残留的错误状态调用，并移除 `middleware.ts` 的未使用类型导入；当前 `npm run lint` / `npm run build` 均通过）
 
 ## 🎯 里程碑
 
@@ -227,7 +228,8 @@
 - 已修复 `ThemeToggle` 的运行时问题：把依赖 `window` 的逻辑全部收回 `useEffect`，避免服务端渲染阶段访问浏览器对象；同时恢复 **light / dark / system** 三态 icon-only HeroUI Tabs，并保持 `localStorage` 持久化与系统主题跟随逻辑正常。
 - 内容收尾已补齐：将 `contents/posts/2026-03-31-building-mdx-content-pipelines.mdx` 从草稿扩写并发布；新增 `contents/posts/2026-04-05-tuning-static-search-for-small-blogs.mdx` 作为第 4 篇示例文章。当前站内已发布文章从 2 篇提升到 4 篇，博客列表终于不像空样板。
 - 运行态验证通过：`/`、`/blog`、`/blog/2026-03-31-building-mdx-content-pipelines`、`/blog/2026-04-05-tuning-static-search-for-small-blogs` 在 dev server 下均返回 `200`。
-- 构建验证通过：`npm run build` ✅；`npm run lint` 仅剩 `middleware.ts` 一个历史遗留 `Locale` 未使用 warning，不是本轮引入的新锅。
+- 第 2 轮收尾修正：继续核查代码时发现 `components/common/ThemeToggle.tsx` 还残留一个无效的 `setThemePreference(...)` 调用，导致 TypeScript 构建失败；同时 `middleware.ts` 里还有一个没用的 `Locale` 类型导入。现已一并清理。
+- 构建验证更新：当前 `npm run lint` ✅、`npm run build` ✅，构建链路重新回到可交付状态。
 - 截图已归档到 `.openclaw/artifacts/2026-04-05-round1/`：包含 `home-desktop.png`、`blog-desktop.png`。
 
 ### 2026-04-04（周六）04:00 — Phase 4 完成验收与文案收尾

@@ -38,7 +38,6 @@ export function ThemeToggle() {
     if (!key) return;
     const nextPreference = key.toString() as ThemePreference;
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
-    setThemePreference(nextPreference);
     setSelectedKey(nextPreference);
     applyThemePreference(nextPreference);
   };
