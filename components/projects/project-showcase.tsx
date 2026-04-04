@@ -18,12 +18,25 @@ type Project = {
 const projects: Project[] = [
   {
     year: "2026",
-    title: "BlueBlog",
+    title: "OpenClaw Dashboard",
     status: "In Progress",
-    summary: "Personal publishing platform with editorial layouts, MDX writing flow, and design-token-driven theming.",
+    summary: "本地桌面应用 — OpenClaw 专属 AI 使用洞察工具，查看模型消耗、Token 用量、成本分析。",
     description:
-      "Built with Next.js 15 App Router and HeroUI v3. Pairs clean reading experiences with portfolio-grade presentation and a design system that stays consistent across themes.",
-    stack: ["Next.js 15", "React 19", "HeroUI v3", "Tailwind CSS v4", "MDX"],
+      "Next.js 14 + React 18 + Tailwind CSS + shadcn/ui 构建的本地仪表板，Swift 桌面壳封装。帮助用户清晰追踪 AI 模型用量、成本分布、会话历史，支持买断制（免费版 + Pro ¥49）商业模式。",
+    stack: ["Next.js 14", "React 18", "Tailwind CSS", "shadcn/ui", "Swift", "Node Runtime"],
+    links: [
+      { label: "GitHub", href: "https://github.com/blue-a11y/agents-dashboard", external: true },
+      { label: "Blog", href: "/blog" },
+    ],
+  },
+  {
+    year: "2026",
+    title: "BlueBlog",
+    status: "Live",
+    summary: "个人发布平台，支持 MDX 写作流、设计 Token 驱动的主题系统、路由级 i18n。",
+    description:
+      "基于 Next.js 15 App Router 和 HeroUI v3。干净的阅读体验 + 作品集级展示 + 跨主题一致的设计系统。支持中文/英文路由级国际化。",
+    stack: ["Next.js 15", "React 19", "HeroUI v3", "Tailwind CSS v4", "MDX", "next-intl"],
     links: [
       { label: "Read blog", href: "/blog" },
       { label: "About", href: "/about" },
