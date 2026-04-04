@@ -9,31 +9,24 @@ import {
   THEME_STORAGE_KEY,
   type ThemePreference,
 } from "@/lib/theme";
-import { SunIcon, MoonIcon } from "@/components/common/ThemeIcons";
+import { MonitorIcon, MoonIcon, SunIcon } from "@/components/common/ThemeIcons";
 
 export function ThemeToggle() {
-  const [themePreference, setThemePreference] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
-
-  // 决定滑块当前应该停在哪里：如果不是 system，就停在实际值上；如果是 system，就停在系统当前主题上
-  const getSelectedKey = (pref: ThemePreference) => {
-    if (pref !== "system") return pref;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  };
-
-  const [selectedKey, setSelectedKey] = useState<string>(getSelectedKey(themePreference) as string);
+  const [selectedKey, setSelectedKey] = useState<string>(DEFAULT_THEME_PREFERENCE);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const initialPreference = getStoredThemePreference(window.localStorage);
-    applyThemePreference(initialPreference);
-    setThemePreference(initialPreference);
-    setSelectedKey(getSelectedKey(initialPreference));
+    const syncThemeState = (preference: ThemePreference) => {
+      const resolved = applyThemePreference(preference);
+      setSelectedKey(preference === "system" ? "system" : resolved);
+    };
+
+    syncThemeState(getStoredThemePreference(window.localStorage));
 
     const handleSystemThemeChange = () => {
       const currentPreference = getStoredThemePreference(window.localStorage);
       if (currentPreference === "system") {
-        const resolved = applyThemePreference("system");
-        setSelectedKey(resolved);
+        syncThemeState("system");
       }
     };
 
@@ -43,12 +36,11 @@ export function ThemeToggle() {
 
   const handleThemeChange = (key: Key | null) => {
     if (!key) return;
-    const keyStr = key.toString();
-    const nextPreference = keyStr as ThemePreference; 
+    const nextPreference = key.toString() as ThemePreference;
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
-    applyThemePreference(nextPreference);
     setThemePreference(nextPreference);
-    setSelectedKey(keyStr);
+    setSelectedKey(nextPreference);
+    applyThemePreference(nextPreference);
   };
 
   return (
@@ -60,12 +52,16 @@ export function ThemeToggle() {
     >
       <Tabs.ListContainer className="shrink-0">
         <Tabs.List className="*:data-[selected=true]:text-foreground *:h-7 *:w-7 *:min-w-0 *:px-0 h-9 gap-1 rounded-full bg-zinc-100 p-1 dark:bg-zinc-900">
-          <Tabs.Tab key="light">
+          <Tabs.Tab key="light" aria-label="Use light theme">
             <SunIcon className="h-4 w-4" />
             <Tabs.Indicator />
           </Tabs.Tab>
-          <Tabs.Tab key="dark">
+          <Tabs.Tab key="dark" aria-label="Use dark theme">
             <MoonIcon className="h-4 w-4" />
+            <Tabs.Indicator />
+          </Tabs.Tab>
+          <Tabs.Tab key="system" aria-label="Follow system theme">
+            <MonitorIcon className="h-4 w-4" />
             <Tabs.Indicator />
           </Tabs.Tab>
         </Tabs.List>

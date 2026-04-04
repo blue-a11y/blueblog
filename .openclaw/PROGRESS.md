@@ -64,13 +64,14 @@
 - [x] Phase 4 全量验收（响应式 / build / 页面一致性 / 截图归档）
 
 ### Phase 5：SEO + RSS + 搜索 + 性能优化 + 部署
-**状态**：🟡 接近完成（SEO / RSS / 搜索 / 性能优化 / production 部署 / Speed Insights / 正式身份信息统一替换已落地；仍剩自定义域名稳定性与内容充实度收尾） | **目标**：2-3 天 | **开始日期**：2026-04-04
+**状态**：🟡 接近完成（SEO / RSS / 搜索 / 性能优化 / production 部署 / Speed Insights / 正式身份信息统一替换 / 内容充实度收尾已落地；仍剩自定义域名稳定性待用户提供域名或 DNS 权限） | **目标**：2-3 天 | **开始日期**：2026-04-04
 
 - [x] SEO 基线（站点级 metadata、canonical、Open Graph / Twitter、sitemap、robots.txt）
 - [x] RSS 生成
 - [x] 全文搜索（最小可用版：静态 JSON 索引 + 客户端标题/摘要/标签搜索）
 - [x] 性能优化（ISR / 缓存策略已落地，首页与博客列表客户端包袱已明显减轻；图片项暂未深挖，因当前站内几乎无内容图片）
 - [ ] Vercel 部署 + 自定义域名配置（首次 production deploy 已成功；真正可用的线上别名为 `https://blueblog-theta.vercel.app`。原先误把 `app/` 子目录连成独立项目导致整站 404，已改为从仓库根目录重新 link 到 `blues-projects-90e3f68b/blueblog` 并修复上线。自定义域名仍待用户决定域名 / DNS 权限后继续）
+- [x] 内容充实度收尾（已补齐并发布第 3、4 篇示例文章，博客内容系统不再只有两篇样例撑门面）
 - [x] 主题颜色回归修复（已修正首页、/blog、文章页在明/暗主题下的弱对比 token；重点修复次级文字、边框、卡片层级与文章正文容器层次）
 
 ## 🎯 里程碑
@@ -220,6 +221,14 @@
 - 已克制修复 `app/globals.css` 的核心颜色 token：仅增强 `surface` / `card` / `muted` / `muted-foreground` / `border` / `shadow` 在明暗两套主题下的对比度，不改站点整体气质。
 - 额外微调 `app/blog/[slug]/page.tsx`：将文章正文大容器从 `bg-card` 调整为 `bg-surface/96`，并稍微提高边框与阴影层级，让正文卡和内部代码块终于不再糊成一坨。
 - 回归验证通过：再次截图确认首页、`/blog`、文章页在明/暗主题下都可读性更稳；`npm run lint` ✅、`npm run build` ✅。
+
+### 2026-04-05（周日）04:00 — Phase 5 第1轮：运行时修复 + 内容充实度收尾
+- 按硬规则先启动 `npm run dev -- --port 3100` 做基线验证，结果首页直接 `500`。定位到 `components/common/ThemeToggle.tsx` 在 SSR 初始化阶段就读取 `window.matchMedia`，这代码就是在服务器上裸奔，炸了活该。
+- 已修复 `ThemeToggle` 的运行时问题：把依赖 `window` 的逻辑全部收回 `useEffect`，避免服务端渲染阶段访问浏览器对象；同时恢复 **light / dark / system** 三态 icon-only HeroUI Tabs，并保持 `localStorage` 持久化与系统主题跟随逻辑正常。
+- 内容收尾已补齐：将 `contents/posts/2026-03-31-building-mdx-content-pipelines.mdx` 从草稿扩写并发布；新增 `contents/posts/2026-04-05-tuning-static-search-for-small-blogs.mdx` 作为第 4 篇示例文章。当前站内已发布文章从 2 篇提升到 4 篇，博客列表终于不像空样板。
+- 运行态验证通过：`/`、`/blog`、`/blog/2026-03-31-building-mdx-content-pipelines`、`/blog/2026-04-05-tuning-static-search-for-small-blogs` 在 dev server 下均返回 `200`。
+- 构建验证通过：`npm run build` ✅；`npm run lint` 仅剩 `middleware.ts` 一个历史遗留 `Locale` 未使用 warning，不是本轮引入的新锅。
+- 截图已归档到 `.openclaw/artifacts/2026-04-05-round1/`：包含 `home-desktop.png`、`blog-desktop.png`。
 
 ### 2026-04-04（周六）04:00 — Phase 4 完成验收与文案收尾
 - 完成 `/showcase` 文案与验收面板重构：将主题切换实验室的可见文案统一为简洁专业英文，保留 HeroUI v3 compound pattern、实时主题预览、表单反馈与完成度展示。

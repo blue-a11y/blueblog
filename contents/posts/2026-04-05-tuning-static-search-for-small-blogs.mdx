@@ -1,0 +1,84 @@
+---
+title: Tuning Static Search for Small Blogs
+description: Why a tiny JSON index is often enough, and how to keep search useful without dragging a database into a personal site.
+date: 2026-04-05
+published: true
+tags:
+  - Search
+  - Performance
+  - Jamstack
+---
+
+Personal blogs do not need enterprise search theater.
+
+If the site has dozens or even a few hundred posts, a prebuilt JSON index can deliver a search experience that feels instant, stays cheap, and avoids shipping unnecessary infrastructure.
+
+## Start with the smallest thing that helps
+
+For a small content site, the search index usually only needs a handful of fields:
+
+- title
+- description
+- excerpt
+- tags
+- slug
+
+That is enough to answer the real user question: _“Can I find the post I vaguely remember?”_
+
+```json
+{
+  "slug": "2026-04-05-tuning-static-search-for-small-blogs",
+  "title": "Tuning Static Search for Small Blogs",
+  "tags": ["Search", "Performance", "Jamstack"]
+}
+```
+
+You do not need typo tolerance, ranking dashboards, or an external service on day one. You need reasonable recall and fast feedback.
+
+## Bias toward precomputation
+
+The clean approach is to generate the search index from the same content pipeline that powers the blog listing.
+
+That gives you a few nice properties for free:
+
+1. no runtime database dependency
+2. no separate admin workflow
+3. consistent metadata between list pages, feeds, and search
+4. easy cache control with ISR or static assets
+
+For content-heavy product surfaces, server-backed search can be worth it. For a personal blog, that is often overkill dressed up as ambition.
+
+## Make matching broader than the UI suggests
+
+A single input field can still search across multiple fields behind the scenes. I like matching against:
+
+- title for precise recall
+- description for strong editorial summaries
+- excerpt for partial memory
+- tags for topic-based discovery
+
+That keeps the interface calm while making the feature feel smarter than it looks.
+
+## Optimize payload, not just code
+
+Search performance is not only about algorithms. Payload size matters.
+
+A few practical rules:
+
+- do not ship full article bodies if excerpts are enough
+- strip unused fields from the client payload
+- cache the generated index aggressively
+- keep the list UI server-rendered where possible
+
+The goal is simple: the page should stay light even after search exists.
+
+## Know when to graduate
+
+Static search stops being the right choice when:
+
+- the index becomes large enough to hurt page weight
+- ranking quality starts to matter more than recall
+- content updates must appear immediately
+- you need filtering, facets, or language-aware stemming
+
+Until then, a tiny static index is not a compromise. It is just the correct level of engineering.

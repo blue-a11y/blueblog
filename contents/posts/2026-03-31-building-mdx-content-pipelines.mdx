@@ -2,7 +2,7 @@
 title: Building MDX Content Pipelines
 description: Parsing frontmatter, shaping metadata, and keeping a content layer boring in the best way.
 date: 2026-03-31
-published: false
+published: true
 tags:
   - MDX
   - Content
@@ -12,5 +12,64 @@ tags:
 The best content pipeline is predictable.
 
 Posts should be easy to write, easy to parse, and difficult to break by accident. That means strict metadata, stable slug rules, and one clear source directory.
+
+## Start with metadata that behaves
+
+A post file should answer four questions without ceremony:
+
+- what it is called
+- when it was published
+- whether it should be public
+- which tags help people find it later
+
+Once that contract exists, the rest of the system becomes mechanical. A parser can validate frontmatter, a list page can trust dates and summaries, and feeds or search indexes can reuse the same shape.
+
+```ts
+export type PostMeta = {
+  title: string;
+  description: string;
+  date: string;
+  published: boolean;
+  tags: string[];
+};
+```
+
+That type is not glamorous. Good. Content infrastructure should feel boring, because boring code survives editorial growth.
+
+## Make slugs obvious
+
+I prefer file names that already look like URLs: `2026-03-31-building-mdx-content-pipelines.mdx` tells me the publish date and the final slug in one glance.
+
+That keeps three failure modes under control:
+
+1. accidentally duplicated titles
+2. ambiguous draft naming
+3. fragile “generate slug from title” logic that changes after edits
+
+If a writer renames the article title, the file path does not need to move. That stability matters once external links, RSS items, and search indexes start pointing to the page.
+
+## Keep the rendering layer thin
+
+The content layer should transform files into a clean object graph. It should not secretly handle business rules, fetch remote data, or decide layout concerns.
+
+A healthy split looks like this:
+
+- the parser reads files and validates metadata
+- the formatter derives reading time, URLs, and summaries
+- the page component renders the result
+
+Anything more magical usually turns into late-night debugging when one malformed frontmatter field poisons the build.
+
+## Design for downstream reuse
+
+Once post data is normalized, the same source can feed everything else:
+
+- blog list cards
+- RSS XML
+- sitemap entries
+- static search indexes
+- Open Graph metadata
+
+That reuse is the payoff. You write content once, then let the pipeline fan it out.
 
 The less magic in the content layer, the easier it is to scale later with search, feeds, and static generation.
