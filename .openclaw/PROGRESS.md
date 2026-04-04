@@ -180,6 +180,8 @@
 - 明确保留 Twitter card 元数据类型，但不展示任何 Twitter / X 账号、handle 或社交入口，避免页面和分享卡片继续带错身份。
 - 新增 `.openclaw/DEVELOPER-HANDOFF.md`：包含项目当前状态、技术栈、目录结构、关键路由、MDX 内容系统、SEO / RSS / 搜索 / Vercel / Speed Insights 状态、本地开发命令、部署方式、后续优先级和已知坑。
 - 验证通过：`npm run lint` ✅、`npm run build` ✅；`npm run dev -- --port 3060` 后实测 `/`、`/about`、`/projects`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/feed.xml`、`/search-index.json` 全部返回 `200`，并确认首页 / About 页面已包含 **Blue / xuanzhang194@gmail.com / github.com/blue-a11y**，且旧邮箱已消失。
+- 已完成提交 `47614d4` 并 push 到 `origin/main`，随后执行新的 production deploy：`https://blueblog-9trgojo5h-blues-projects-90e3f68b.vercel.app`，并手动把 `https://blueblog.me` alias 到该 deployment。
+- 当前线上状态：deployment 在 Vercel 中为 `Ready`；但从未登录的外部 HTTP 请求看，`blueblog.me` 返回 `401`（Vercel SSO / Deployment Protection 页面），说明现在的阻塞点不是代码或部署失败，而是线上访问保护策略仍开着。
 - 本轮完成后，项目已具备“用户自己继续接手开发”的基本文档条件，不再只是靠任务日志硬猜上下文。
 
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
