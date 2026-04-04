@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button, Chip } from "@heroui/react";
 import { siteConfig } from "@/lib/site";
+import { useI18n } from "@/providers/i18n-provider";
 
 const socialLinks = [
   { name: "Email", href: `mailto:${siteConfig.email}`, icon: <MailIcon /> },
@@ -10,6 +11,8 @@ const socialLinks = [
 ];
 
 export function HomeHero() {
+  const { t } = useI18n();
+
   return (
     <main className="relative isolate overflow-hidden">
       <div className="hero-grid pointer-events-none absolute inset-0 opacity-50" />
@@ -21,11 +24,11 @@ export function HomeHero() {
           <div className="space-y-8">
             <div className="fade-in space-y-6">
               <Chip variant="secondary" className="w-fit rounded-full border border-border/60 bg-card/90 px-3.5 py-1.5 text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase backdrop-blur-sm">
-                Frontend Engineer
+                {t("home.role")}
               </Chip>
 
               <h1 className="text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl leading-[1.1]">
-                Hi, I&apos;m{" "}
+                {t("home.greeting")}{" "}
                 <span className="bg-gradient-to-r from-accent to-[oklch(from_var(--accent)_calc(l+0.08)_calc(c*0.8)_calc(h-15))] bg-clip-text text-transparent">
                   {siteConfig.personName}
                 </span>
@@ -33,7 +36,7 @@ export function HomeHero() {
               </h1>
 
               <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                I build interfaces with React, Next.js, and design systems that make complex things feel simple.
+                {t("home.description")}
               </p>
             </div>
 
@@ -43,7 +46,7 @@ export function HomeHero() {
                   variant="secondary"
                   className="min-h-12 rounded-full border border-accent/18 bg-accent/12 px-7 text-sm font-medium text-accent shadow-[0_18px_40px_-24px_oklch(from_var(--accent)_l_c_h/0.6)] transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/28 hover:bg-accent/16"
                 >
-                  Read the blog
+                  {t("home.readBlog")}
                 </Button>
               </Link>
               <a href={`mailto:${siteConfig.email}`}>
@@ -51,7 +54,7 @@ export function HomeHero() {
                   variant="outline"
                   className="min-h-12 rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
                 >
-                  Email Blue
+                  {t("home.email")}
                 </Button>
               </a>
             </div>
@@ -76,7 +79,7 @@ export function HomeHero() {
               </a>
             ))}
             <span className="text-sm text-muted-foreground/60">
-              Built with Next.js · HeroUI · Tailwind CSS
+              {t("home.builtWith")}
             </span>
           </div>
         </div>

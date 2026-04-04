@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "首页",
+    "blog": "博客",
+    "projects": "项目",
+    "lab": "实验室",
+    "about": "关于"
+  },
+  "home": {
+    "greeting": "你好，我是",
+    "role": "前端工程师",
+    "description": "我用 React、Next.js 和设计系统构建界面，让复杂的事情变得简单。",
+    "readBlog": "阅读博客",
+    "email": "邮件联系",
+    "builtWith": "基于 Next.js · HeroUI · Tailwind CSS 构建"
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "关于前端工程、设计系统以及构建 Web 应用的一些思考。",
+    "searchPlaceholder": "按标题、摘要或标签搜索…",
+    "results": "条结果",
+    "resultsPlural": "条结果",
+    "for": "搜索",
+    "in": "标签",
+    "searchHint": "轻量级客户端搜索，基于静态博客索引。足够快，不做过度工程。",
+    "all": "全部",
+    "clear": "清除",
+    "noPosts": "暂无文章。",
+    "noMatches": "未找到匹配",
+    "nothingFound": "当前搜索没有结果。",
+    "tryBroader": "试试更宽的关键词、换个标签，或者清除筛选条件。索引是有意保持简单，不是读心术。",
+    "clearFilters": "清除筛选",
+    "loadMore": "加载更多",
+    "minRead": "分钟阅读"
+  },
+  "about": {
+    "title": "关于",
+    "intro": "我是 Blue，一名关注产品界面质感的前端工程师——清晰的层级、克制的动效、耐用的代码，以及即便项目不再是玩具时依然站得住脚的内容。",
+    "work": "我的工作处于前端工程、产品思维和书面表达的交叉地带。我最喜欢的作品介于编辑式设计与产品基础设施之间。",
+    "skills": "技能",
+    "timeline": "经历",
+    "contact": "联系方式"
+  },
+  "theme": {
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "common": {
+    "navigation": "导航",
+    "navHint": "极简，安静，不再浑浊。",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
+  }
+}

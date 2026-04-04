@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Chip, Input } from "@heroui/react";
 import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
 import { formatPostDate } from "@/lib/format";
+import { useI18n } from "@/providers/i18n-provider";
 import type { BlogSearchEntry, PostSummary } from "@/types/post";
 
 const INITIAL_VISIBLE_POSTS = 6;
@@ -45,6 +46,7 @@ function FilterButton({
 }
 
 export function PostList({ posts, tags, searchIndex }: PostListProps) {
+  const { t } = useI18n();
   const [activeTag, setActiveTag] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_POSTS);
@@ -71,13 +73,15 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
   const hasMore = filteredPosts.length > visibleCount;
   const isFiltered = activeTag !== "all" || normalizedQuery.length > 0;
 
+  const resultText = filteredPosts.length === 1 ? t("blog.results") : t("blog.resultsPlural");
+
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl px-6 py-20 sm:px-10">
       <div className="w-full space-y-12">
         <div className="fade-in space-y-4">
-          <h1 className="text-4xl font-bold tracking-[-0.04em] text-foreground sm:text-5xl">Blog</h1>
+          <h1 className="text-4xl font-bold tracking-[-0.04em] text-foreground sm:text-5xl">{t("blog.title")}</h1>
           <p className="max-w-lg text-base leading-relaxed text-muted-foreground">
-            Thoughts on frontend engineering, design systems, and building things for the web.
+            {t("blog.subtitle")}
           </p>
         </div>
 
@@ -85,34 +89,34 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div className="max-w-md space-y-2">
               <Input
-                aria-label="Search posts"
+                aria-label={t("blog.searchPlaceholder")}
                 value={query}
-                placeholder="Search by title, summary, or tag…"
+                placeholder={t("blog.searchPlaceholder")}
                 onChange={(event) => setQuery(event.target.value)}
                 className="w-full"
               />
               <p className="text-sm text-muted-foreground">
-                {filteredPosts.length} result{filteredPosts.length === 1 ? "" : "s"}
+                {filteredPosts.length} {resultText}
                 {normalizedQuery ? (
                   <>
-                    {" "}for <span className="font-medium text-foreground">“{query.trim()}”</span>
+                    {" "}{t("blog.for")} <span className="font-medium text-foreground">&ldquo;{query.trim()}&rdquo;</span>
                   </>
                 ) : null}
                 {activeTag !== "all" ? (
                   <>
-                    {" "}in <span className="font-medium text-foreground">{activeTag}</span>
+                    {" "}{t("blog.in")} <span className="font-medium text-foreground">{activeTag}</span>
                   </>
                 ) : null}
               </p>
             </div>
 
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-right">
-              Lightweight client-side search, powered by a static blog index. Fast enough without pretending to be Algolia.
+              {t("blog.searchHint")}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <FilterButton active={activeTag === "all"} onPress={() => setActiveTag("all")}>All</FilterButton>
+            <FilterButton active={activeTag === "all"} onPress={() => setActiveTag("all")}>{t("blog.all")}</FilterButton>
             {tags.map((tag) => (
               <FilterButton key={tag} active={activeTag === tag} onPress={() => setActiveTag(tag)}>
                 {tag}
@@ -123,7 +127,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                 setActiveTag("all");
                 setQuery("");
               }}>
-                Clear
+                {t("blog.clear")}
               </FilterButton>
             ) : null}
           </div>
@@ -131,15 +135,15 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
 
         {posts.length === 0 ? (
           <div className="fade-in rounded-2xl border border-dashed border-border/60 py-20 text-center">
-            <p className="text-muted-foreground">No posts published yet.</p>
+            <p className="text-muted-foreground">{t("blog.noPosts")}</p>
           </div>
         ) : filteredPosts.length === 0 ? (
           <Card className="fade-in rounded-[28px] border border-dashed border-border/60 bg-card/50 px-6 py-16 text-center shadow-[0_24px_80px_-40px_var(--shadow)]">
             <Card.Content className="mx-auto max-w-md space-y-3 p-0">
-              <p className="text-sm font-medium tracking-[0.22em] text-muted-foreground uppercase">No matches</p>
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">Nothing surfaced for this search.</h2>
+              <p className="text-sm font-medium tracking-[0.22em] text-muted-foreground uppercase">{t("blog.noMatches")}</p>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">{t("blog.nothingFound")}</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Try a broader keyword, another tag, or clear the filters. The index is intentionally simple, not psychic.
+                {t("blog.tryBroader")}
               </p>
               <div className="pt-3">
                 <Button
@@ -150,7 +154,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                     setQuery("");
                   }}
                 >
-                  Clear filters
+                  {t("blog.clearFilters")}
                 </Button>
               </div>
             </Card.Content>
@@ -184,7 +188,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                       <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-muted-foreground">
                         <time>{formatPostDate(post.date)}</time>
                         <span>·</span>
-                        <span>{post.readingTime} min read</span>
+                        <span>{post.readingTime} {t("blog.minRead")}</span>
                       </div>
                     </Card.Content>
                   </Card>
@@ -199,7 +203,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                   className="rounded-full border border-border/70 bg-card/80 px-8 py-3 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-muted/70"
                   onPress={() => setVisibleCount((count) => count + LOAD_MORE_COUNT)}
                 >
-                  Load more
+                  {t("blog.loadMore")}
                 </Button>
               </div>
             ) : null}

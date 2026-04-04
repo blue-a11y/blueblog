@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "lab": "Lab",
+    "about": "About"
+  },
+  "home": {
+    "greeting": "Hi, I'm",
+    "role": "Frontend Engineer",
+    "description": "I build interfaces with React, Next.js, and design systems that make complex things feel simple.",
+    "readBlog": "Read the blog",
+    "email": "Email Blue",
+    "builtWith": "Built with Next.js · HeroUI · Tailwind CSS"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Thoughts on frontend engineering, design systems, and building things for the web.",
+    "searchPlaceholder": "Search by title, summary, or tag…",
+    "results": "result",
+    "resultsPlural": "results",
+    "for": "for",
+    "in": "in",
+    "searchHint": "Lightweight client-side search, powered by a static blog index. Fast enough without pretending to be Algolia.",
+    "all": "All",
+    "clear": "Clear",
+    "noPosts": "No posts published yet.",
+    "noMatches": "No matches",
+    "nothingFound": "Nothing surfaced for this search.",
+    "tryBroader": "Try a broader keyword, another tag, or clear the filters. The index is intentionally simple, not psychic.",
+    "clearFilters": "Clear filters",
+    "loadMore": "Load more",
+    "minRead": "min read"
+  },
+  "about": {
+    "title": "About",
+    "intro": "I'm Blue, a frontend engineer who cares about product surfaces that feel intentional — strong hierarchy, quieter motion, durable code, and content that still makes sense when the project stops being a toy.",
+    "work": "I work at the intersection of frontend engineering, product thinking, and written communication. My favorite projects sit between editorial design and product infrastructure.",
+    "skills": "Skills",
+    "timeline": "Timeline",
+    "contact": "Contact"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "common": {
+    "navigation": "Navigation",
+    "navHint": "Minimal, quiet, and finally not muddy.",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  }
+}

@@ -5,14 +5,8 @@ import { Button } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
-
-const navigationItems = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/projects", label: "Projects" },
-  { href: "/playground", label: "Lab" },
-  { href: "/about", label: "About" },
-];
+import { useI18n } from "@/providers/i18n-provider";
+import { localeNames } from "@/lib/i18n-config";
 
 type NavLinkProps = {
   href: string;
@@ -50,9 +44,22 @@ function NavLink({ href, label, isActive, onClick, variant = "desktop" }: NavLin
 export function SiteNavbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { locale, setLocale, t } = useI18n();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const toggleLocale = () => {
+    setLocale(locale === "en" ? "zh" : "en");
+  };
+
+  const navigationItems = [
+    { href: "/", label: t("nav.home") },
+    { href: "/blog", label: t("nav.blog") },
+    { href: "/projects", label: t("nav.projects") },
+    { href: "/playground", label: t("nav.lab") },
+    { href: "/about", label: t("nav.about") },
+  ];
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6">
@@ -88,11 +95,18 @@ export function SiteNavbar() {
           <div className="relative flex items-center gap-1.5">
             <ThemeToggle />
             <Button
+              variant="ghost"
+              onPress={toggleLocale}
+              className="h-9 rounded-full border border-transparent bg-white/8 px-3 text-xs font-medium text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10"
+            >
+              {localeNames[locale === "en" ? "zh" : "en"]}
+            </Button>
+            <Button
               isIconOnly
               variant="ghost"
               onPress={() => setMenuOpen((v) => !v)}
               className="h-9 w-9 rounded-full border border-transparent bg-white/8 text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10 md:hidden"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? t("common.closeMenu") : t("common.openMenu")}
               aria-expanded={menuOpen}
               aria-controls="mobile-site-menu"
             >

@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNavbar } from "@/components/layout/site-navbar";
 import { getOgImageUrl, siteConfig } from "@/lib/site";
 import { getThemeScript } from "@/lib/theme";
+import { I18nProvider } from "@/providers/i18n-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -88,10 +89,12 @@ export default function RootLayout({
     >
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <div className="relative min-h-screen">
-          <SiteNavbar />
-          <div className="pt-20">{children}</div>
-        </div>
+        <I18nProvider>
+          <div className="relative min-h-screen">
+            <SiteNavbar />
+            <div className="pt-20">{children}</div>
+          </div>
+        </I18nProvider>
         <SpeedInsights />
       </body>
     </html>
