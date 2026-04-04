@@ -20,7 +20,7 @@ export function ThemeToggle() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   };
 
-  const [selectedKey, setSelectedKey] = useState<Key>(getSelectedKey(themePreference));
+  const [selectedKey, setSelectedKey] = useState<string>(getSelectedKey(themePreference) as string);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -43,12 +43,12 @@ export function ThemeToggle() {
 
   const handleThemeChange = (key: Key | null) => {
     if (!key) return;
-    // 如果点在 dark 上，偏好设为 dark；点在 light 上，偏好设为 light
-    const nextPreference = key as ThemePreference; 
+    const keyStr = key.toString();
+    const nextPreference = keyStr as ThemePreference; 
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
     applyThemePreference(nextPreference);
     setThemePreference(nextPreference);
-    setSelectedKey(key);
+    setSelectedKey(keyStr);
   };
 
   return (

@@ -88,39 +88,39 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Chip
-              size="sm"
-              variant={activeTag === "all" ? "solid" : "flat"}
-              color={activeTag === "all" ? "primary" : "default"}
-              className="cursor-pointer select-none transition-transform active:scale-95"
-              onPress={() => setActiveTag("all")}
+            <button
+              onClick={() => setActiveTag("all")}
+              className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                activeTag === "all"
+                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+              }`}
             >
               {t("blog.all")}
-            </Chip>
+            </button>
             {tags.map((tag) => (
-              <Chip
+              <button
                 key={tag}
-                size="sm"
-                variant={activeTag === tag ? "solid" : "flat"}
-                color={activeTag === tag ? "primary" : "default"}
-                className="cursor-pointer select-none transition-transform active:scale-95"
-                onPress={() => setActiveTag(tag)}
+                onClick={() => setActiveTag(tag)}
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                  activeTag === tag
+                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                    : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                }`}
               >
                 {tag}
-              </Chip>
+              </button>
             ))}
             {isFiltered ? (
-              <Chip
-                size="sm"
-                variant="flat"
-                className="cursor-pointer select-none text-muted-foreground transition-transform active:scale-95"
-                onPress={() => {
+              <button
+                onClick={() => {
                   setActiveTag("all");
                   setQuery("");
                 }}
+                className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-500 transition-all hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
               >
                 {t("blog.clear")}
-              </Chip>
+              </button>
             ) : null}
           </div>
         </div>
@@ -163,7 +163,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                         <Chip
                           key={tag}
                           size="sm"
-                          variant="flat"
+                          variant="soft"
                           className="bg-zinc-100 text-[10px] font-medium tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                         >
                           {tag}
@@ -199,7 +199,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
             {hasMore ? (
               <div className="flex justify-center">
                 <Button
-                  variant="faded"
+                  variant="outline"
                   className="rounded-full px-8 text-sm font-medium text-foreground"
                   onPress={() => setVisibleCount((count) => count + LOAD_MORE_COUNT)}
                 >

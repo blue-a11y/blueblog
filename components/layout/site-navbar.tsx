@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useTranslations } from "next-intl";
-import { locales, localeNames } from "@/lib/i18n-config";
+import { localeNames } from "@/lib/i18n-config";
 import { useParams } from "next/navigation";
 import type { Locale } from "@/lib/i18n-config";
 
