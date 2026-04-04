@@ -14,16 +14,26 @@ import { SunIcon, MoonIcon } from "@/components/common/ThemeIcons";
 export function ThemeToggle() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
 
+  // 决定滑块当前应该停在哪里：如果不是 system，就停在实际值上；如果是 system，就停在系统当前主题上
+  const getSelectedKey = (pref: ThemePreference) => {
+    if (pref !== "system") return pref;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  };
+
+  const [selectedKey, setSelectedKey] = useState<Key>(getSelectedKey(themePreference));
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const initialPreference = getStoredThemePreference(window.localStorage);
     applyThemePreference(initialPreference);
     setThemePreference(initialPreference);
+    setSelectedKey(getSelectedKey(initialPreference));
 
     const handleSystemThemeChange = () => {
       const currentPreference = getStoredThemePreference(window.localStorage);
       if (currentPreference === "system") {
-        applyThemePreference("system");
+        const resolved = applyThemePreference("system");
+        setSelectedKey(resolved);
       }
     };
 
@@ -33,16 +43,18 @@ export function ThemeToggle() {
 
   const handleThemeChange = (key: Key | null) => {
     if (!key) return;
-    const nextPreference = key as ThemePreference;
+    // 如果点在 dark 上，偏好设为 dark；点在 light 上，偏好设为 light
+    const nextPreference = key as ThemePreference; 
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
     applyThemePreference(nextPreference);
     setThemePreference(nextPreference);
+    setSelectedKey(key);
   };
 
   return (
     <Tabs
       aria-label="Theme preference"
-      selectedKey={themePreference === "system" ? "light" : themePreference}
+      selectedKey={selectedKey}
       onSelectionChange={handleThemeChange}
       className="shrink-0"
     >
