@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Button, Chip } from "@heroui/react";
+import { Button, Card, Chip, Input } from "@heroui/react";
 import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
 import { formatPostDate } from "@/lib/format";
 import { useTranslations } from "next-intl";
@@ -16,34 +16,6 @@ type PostListProps = {
   tags: string[];
   searchIndex: BlogSearchEntry[];
 };
-
-function FilterButton({
-  active,
-  children,
-  onPress,
-  muted = false,
-}: {
-  active?: boolean;
-  children: React.ReactNode;
-  onPress: () => void;
-  muted?: boolean;
-}) {
-  return (
-    <Button
-      variant={active ? "primary" : "outline"}
-      onPress={onPress}
-      className={[
-        "rounded-full px-4 text-sm",
-        !active ? "border-border/70 bg-card/70 text-foreground hover:border-border hover:bg-muted/70" : "",
-        muted ? "text-muted-foreground" : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      {children}
-    </Button>
-  );
-}
 
 export function PostList({ posts, tags, searchIndex }: PostListProps) {
   const t = useTranslations();
