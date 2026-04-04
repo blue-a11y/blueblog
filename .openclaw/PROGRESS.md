@@ -193,12 +193,19 @@
 - 验证通过：`npm run lint` ✅、`npm run build` ✅、`npm run dev -- --port 3070` 后实测 `/`、`/blog`、`/about`、`/blog/2026-03-30-shipping-clean-next-js-layouts` 全部返回 `200`；并保存运行态截图到 `.openclaw/artifacts/2026-04-04-ui-refactor/`。
 - 主题切换验证结论：代码层与运行态均确认 `system` 会持久化为偏好值，并在首屏脚本 / 客户端监听中跟随系统主题解析，不再闪屏也不再只有假两态。
 
-### 2026-04-04（周六）16:58 — Phase 5 第16轮：navbar 主题切换紧急修复
+### 2026-04-04（周六）16:58 — Phase 5 第16轮：navbar 主题切换紧急修复（已被第17轮纠正）
 - 修掉上一轮误判：`components/ThemeToggle.tsx` 不再把 **HeroUI Tabs** 硬塞进 navbar。改为 **HeroUI Dropdown + icon-only trigger**，导航栏里只保留一个紧凑图标按钮，点击后再展开 `Light / Dark / System` 三态菜单。
 - 三态逻辑没有被我手滑做坏：继续复用 `lib/theme.ts` 里的 `applyThemePreference`、`resolveTheme`、`getStoredThemePreference`，`system` 仍会持久化到 `localStorage`，并继续监听系统主题变化。
 - 交互细节补齐：trigger icon 会随当前主题状态变化（light=太阳、dark=月亮、system=显示器 / 按解析态显示），菜单项保留说明文案和当前选中标记，但这些内容只存在于弹出层，不再横向撑爆 navbar。
 - 运行态实测通过：`npm run lint` ✅、`npm run build` ✅、`npm run dev -- --port 3080` ✅。用 Playwright 实际打开首页验证桌面 navbar 高度约 **60px**、宽度 **672px**，不再塌；并实际点击菜单完成 `dark → light → system` 三次切换，确认 `data-theme`、`data-theme-preference`、`localStorage(blueblog-theme)` 都同步正确。
 - 截图证据已归档到 `.openclaw/artifacts/2026-04-04-navbar-fix/`：包含首页桌面图、菜单展开图、dark / system 状态图。当前视觉就是一个小图标在导航最右侧，终于不像把整条 tabs 硬塞进药丸导航里那么蠢。
+
+### 2026-04-04（周六）17:33 — Phase 5 第17轮：ThemeToggle 改回 icon-only HeroUI Tabs 并完成部署
+- 按用户原话把 `components/ThemeToggle.tsx` **改回 HeroUI Tabs**：严格保留三态 `light / dark / system`，每个 tab 只显示 icon（太阳 / 月亮 / 显示器），**不显示文字、不做 dropdown、不做单 icon button**。
+- 保留并继续复用现有主题逻辑：`lib/theme.ts` 没乱动，`applyThemePreference` / `resolveTheme` / `getStoredThemePreference` 继续负责 `localStorage` 持久化、`data-theme` / `data-theme-preference` / `color-scheme` 同步，以及 `system` 跟随系统主题变化。
+- 为了不再把 navbar 撑塌，Tabs 做成紧凑 pill：外层 tablist 实测约 **100 × 36**，桌面首页 navbar 维持 **672 × 60**，布局未塌，右侧主题控件也没有再横向失控。
+- 实际验证通过：`npm run lint` ✅、`npm run build` ✅、`npm run dev -- --port 3090` ✅。用 Playwright 实测点击 `Dark / Light / System` 三个 tab 后，`data-theme`、`data-theme-preference` 与 `localStorage(blueblog-theme)` 均同步正确。
+- 截图证据已归档到 `.openclaw/artifacts/2026-04-04-navbar-tabs-fix/`：包含 `home-desktop.png`、`home-dark.png`、`home-light.png`、`home-system.png`。这次终于是用户要的东西，不是我自作聪明乱改的歪路子。
 
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
 - 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。

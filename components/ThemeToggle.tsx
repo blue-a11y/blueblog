@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type Key, type ReactElement, type SVGProps } from "react";
-import { Dropdown } from "@heroui/react";
+import { useEffect, useState, type Key, type ReactElement, type SVGProps } from "react";
+import { Tabs } from "@heroui/react";
 import {
   applyThemePreference,
   DEFAULT_THEME_PREFERENCE,
@@ -15,25 +15,21 @@ import {
 const themeOptions: {
   key: ThemePreference;
   label: string;
-  description: string;
   Icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
 }[] = [
   {
     key: "light",
     label: "Light",
-    description: "Always use the light palette.",
     Icon: SunIcon,
   },
   {
     key: "dark",
     label: "Dark",
-    description: "Always use the dark palette.",
     Icon: MoonIcon,
   },
   {
     key: "system",
     label: "System",
-    description: "Follow the OS appearance.",
     Icon: MonitorIcon,
   },
 ];
@@ -41,7 +37,6 @@ const themeOptions: {
 export function ThemeToggle() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -50,7 +45,6 @@ export function ThemeToggle() {
 
     setThemePreference(initialPreference);
     setResolvedTheme(initialResolvedTheme);
-    setMounted(true);
 
     const handleSystemThemeChange = (event: MediaQueryListEvent) => {
       const nextPreference = getStoredThemePreference(window.localStorage);
@@ -68,7 +62,9 @@ export function ThemeToggle() {
     return () => mediaQuery.removeEventListener("change", handleSystemThemeChange);
   }, []);
 
-  const handleThemeChange = (key: Key) => {
+  const handleThemeChange = (key: Key | null) => {
+    if (!key) return;
+
     const nextPreference = key as ThemePreference;
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
     const nextResolvedTheme = applyThemePreference(nextPreference);
@@ -76,68 +72,37 @@ export function ThemeToggle() {
     setResolvedTheme(nextResolvedTheme);
   };
 
-  const activeTheme = useMemo(
-    () => themeOptions.find((option) => option.key === themePreference) ?? themeOptions[2],
-    [themePreference],
-  );
-
-  const triggerLabel = useMemo(() => {
-    if (!mounted) return "Theme";
-    return themePreference === "system" ? `Theme: System (${resolvedTheme})` : `Theme: ${activeTheme.label}`;
-  }, [activeTheme.label, mounted, resolvedTheme, themePreference]);
-
-  const TriggerIcon = themePreference === "system"
-    ? resolvedTheme === "dark"
-      ? MoonIcon
-      : MonitorIcon
-    : activeTheme.Icon;
-
   return (
-    <Dropdown>
-      <Dropdown.Trigger
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-white/8 text-foreground/68 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10"
-        aria-label={triggerLabel}
-      >
-        <TriggerIcon className="h-4.5 w-4.5" />
-      </Dropdown.Trigger>
-      <Dropdown.Popover
-        placement="bottom end"
-        className="min-w-[14rem] rounded-2xl border border-border/60 bg-card/96 p-1 shadow-[0_18px_48px_-28px_var(--shadow)] backdrop-blur-xl"
-      >
-        <Dropdown.Menu aria-label="Theme preference" className="outline-none">
+    <Tabs
+      aria-label="Theme preference"
+      selectedKey={themePreference}
+      onSelectionChange={handleThemeChange}
+      className="shrink-0"
+    >
+      <Tabs.ListContainer className="shrink-0">
+        <Tabs.List className="h-9 min-w-0 gap-0.5 rounded-full border border-border/60 bg-white/8 p-0.5 shadow-[0_10px_30px_-24px_var(--shadow)] backdrop-blur-md dark:bg-white/6">
           {themeOptions.map((option) => {
-            const selected = option.key === themePreference;
-            const OptionIcon = option.Icon;
+            const Icon = option.Icon;
+            const ariaLabel = option.key === "system"
+              ? `${option.label} theme (currently ${resolvedTheme})`
+              : `${option.label} theme`;
 
             return (
-              <Dropdown.Item
+              <Tabs.Tab
+                id={option.key}
                 key={option.key}
-                textValue={option.label}
-                onAction={() => handleThemeChange(option.key)}
-                className="rounded-2xl px-3 py-2.5 data-[hovered]:bg-white/12 dark:data-[hovered]:bg-white/8"
+                aria-label={ariaLabel}
+                className="h-7 min-w-0 rounded-full border border-transparent px-0 text-foreground/68 transition-colors data-[hovered]:text-foreground data-[selected=true]:border-border/70 data-[selected=true]:bg-white/18 data-[selected=true]:text-foreground dark:data-[selected=true]:bg-white/10"
               >
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full border border-border/55 bg-white/12 text-foreground/78 dark:bg-white/8">
-                    <OptionIcon className="h-4 w-4" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center justify-between gap-3 text-sm font-medium text-foreground">
-                      <span>{option.label}</span>
-                      {selected ? <span className="text-xs text-accent">✓</span> : null}
-                    </span>
-                    <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
-                      {option.key === "system" && mounted
-                        ? `${option.description} Currently ${resolvedTheme}.`
-                        : option.description}
-                    </span>
-                  </span>
-                </div>
-              </Dropdown.Item>
+                <span className="flex h-7 w-7 items-center justify-center">
+                  <Icon className="h-4 w-4" />
+                </span>
+              </Tabs.Tab>
             );
           })}
-        </Dropdown.Menu>
-      </Dropdown.Popover>
-    </Dropdown>
+        </Tabs.List>
+      </Tabs.ListContainer>
+    </Tabs>
   );
 }
 
