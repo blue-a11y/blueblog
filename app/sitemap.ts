@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPostSummaries } from "@/lib/posts";
+
+export const revalidate = 3600;
 import { buildStaticRouteEntries, getSiteUrl } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

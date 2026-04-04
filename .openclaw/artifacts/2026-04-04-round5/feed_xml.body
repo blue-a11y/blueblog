@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>BlueBlog</title>
+  <description>Blue&apos;s personal site for frontend engineering, design systems, interaction experiments, and quietly opinionated technical writing.</description>
+  <link>https://blueblog.vercel.app</link>
+  <language>en-us</language>
+  <lastBuildDate>Mon, 30 Mar 2026 00:00:00 GMT</lastBuildDate>
+  <ttl>60</ttl>
+  <atom:link href="https://blueblog.vercel.app/feed.xml" rel="self" type="application/rss+xml" />
+  <item>
+  <title>Shipping Clean Next.js Layouts</title>
+  <link>https://blueblog.vercel.app/blog/2026-03-30-shipping-clean-next-js-layouts</link>
+  <guid isPermaLink="true">https://blueblog.vercel.app/blog/2026-03-30-shipping-clean-next-js-layouts</guid>
+  <pubDate>Mon, 30 Mar 2026 00:00:00 GMT</pubDate>
+  <description><![CDATA[A small checklist for layouts that scale without turning into a visual junk drawer. Estimated reading time: 1 min.]]></description>
+  <category>Next.js</category><category>Frontend</category><category>Architecture</category>
+</item>
+<item>
+  <title>Designing Silent Interfaces</title>
+  <link>https://blueblog.vercel.app/blog/2026-03-29-designing-silent-interfaces</link>
+  <guid isPermaLink="true">https://blueblog.vercel.app/blog/2026-03-29-designing-silent-interfaces</guid>
+  <pubDate>Sun, 29 Mar 2026 00:00:00 GMT</pubDate>
+  <description><![CDATA[Notes on building interfaces that feel clear before they feel clever. Estimated reading time: 1 min.]]></description>
+  <category>Design Systems</category><category>UX</category>
+</item>
+</channel>
+</rss>

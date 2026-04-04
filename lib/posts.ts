@@ -2,6 +2,7 @@ import "server-only";
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import { unstable_cache } from "next/cache";
 import matter from "gray-matter";
 import type { Post, PostFrontmatter, PostSummary } from "@/types/post";
 
@@ -109,40 +110,48 @@ async function collectPostFiles(directory: string): Promise<string[]> {
   return files.flat();
 }
 
+const getAllPostsCached = unstable_cache(
+  async (): Promise<Post[]> => {
+    const postFiles = await collectPostFiles(POSTS_DIRECTORY);
+
+    const posts = await Promise.all(
+      postFiles.map(async (filePath) => {
+        const source = await fs.readFile(filePath, "utf8");
+        const { data, content } = matter(source);
+        const frontmatter = normalizeFrontmatter(data as PostFrontmatter, filePath);
+        const excerpt = createExcerpt(content);
+
+        return {
+          slug: buildSlug(frontmatter.date, frontmatter.title),
+          title: frontmatter.title,
+          description: frontmatter.description,
+          date: frontmatter.date,
+          published: frontmatter.published,
+          tags: frontmatter.tags,
+          readingTime: estimateReadingTime(content),
+          content,
+          excerpt: excerpt || frontmatter.description,
+          coverImage: frontmatter.coverImage,
+          path: filePath,
+        } satisfies Post;
+      }),
+    );
+
+    return posts.sort((left, right) => right.date.localeCompare(left.date));
+  },
+  ["all-posts"],
+  { revalidate: 3600, tags: ["posts"] },
+);
+
 export async function getPostBySlug(slug: string, options: { includeDrafts?: boolean } = {}) {
   const posts = await getAllPosts({ includeDrafts: options.includeDrafts ?? true });
   return posts.find((post) => post.slug === slug) ?? null;
 }
 
 export async function getAllPosts(options: { includeDrafts?: boolean } = {}): Promise<Post[]> {
-  const postFiles = await collectPostFiles(POSTS_DIRECTORY);
+  const posts = await getAllPostsCached();
 
-  const posts = await Promise.all(
-    postFiles.map(async (filePath) => {
-      const source = await fs.readFile(filePath, "utf8");
-      const { data, content } = matter(source);
-      const frontmatter = normalizeFrontmatter(data as PostFrontmatter, filePath);
-      const excerpt = createExcerpt(content);
-
-      return {
-        slug: buildSlug(frontmatter.date, frontmatter.title),
-        title: frontmatter.title,
-        description: frontmatter.description,
-        date: frontmatter.date,
-        published: frontmatter.published,
-        tags: frontmatter.tags,
-        readingTime: estimateReadingTime(content),
-        content,
-        excerpt: excerpt || frontmatter.description,
-        coverImage: frontmatter.coverImage,
-        path: filePath,
-      } satisfies Post;
-    }),
-  );
-
-  return posts
-    .filter((post) => options.includeDrafts || post.published)
-    .sort((left, right) => right.date.localeCompare(left.date));
+  return posts.filter((post) => options.includeDrafts || post.published);
 }
 
 export async function getPostSummaries(options: { includeDrafts?: boolean } = {}): Promise<PostSummary[]> {

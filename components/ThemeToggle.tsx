@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@heroui/react";
 
 type Theme = "light" | "dark";
 
@@ -33,17 +32,16 @@ export function ThemeToggle() {
   };
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      className="rounded-full border border-border bg-card/95 px-4 text-sm text-foreground shadow-sm backdrop-blur transition hover:bg-muted"
-      onPress={toggleTheme}
+    <button
+      type="button"
+      className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-card/95 px-4 text-sm text-foreground shadow-sm backdrop-blur transition hover:bg-muted"
+      onClick={toggleTheme}
       aria-label={mounted ? `Switch to ${theme === "light" ? "dark" : "light"} mode` : "Switch theme"}
     >
       <span aria-hidden="true" className="text-base leading-none">
         {mounted ? (theme === "light" ? "🌙" : "☀️") : "◐"}
       </span>
       <span>{mounted ? (theme === "light" ? "Dark mode" : "Light mode") : "Theme"}</span>
-    </Button>
+    </button>
   );
 }

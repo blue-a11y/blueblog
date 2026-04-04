@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { PostList } from "@/components/post-list";
+
+export const revalidate = 3600;
 import { getAllTags, getPostSummaries } from "@/lib/posts";
 import { getBlogSearchIndex } from "@/lib/search";
 import { getOgImageUrl, siteConfig } from "@/lib/site";

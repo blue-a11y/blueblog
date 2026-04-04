@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+
+export const revalidate = 3600;
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPostBySlug, getPostSummaries } from "@/lib/posts";
 import { getOgImageUrl, getSiteUrl } from "@/lib/site";

@@ -1,6 +1,4 @@
-"use client";
-
-import { Button } from "@heroui/react";
+import Link from "next/link";
 
 const socialLinks = [
   { name: "GitHub", href: "https://github.com/zhangxuan", icon: <GitHubIcon /> },
@@ -36,22 +34,20 @@ export function HomeHero() {
             </div>
 
             <div className="fade-in fade-in-delay-2 flex flex-wrap items-center gap-3">
-              <Button
-                size="lg"
-                variant="primary"
-                className="rounded-full px-7"
-                onPress={() => window.location.href = "/blog"}
+              <Link
+                href="/blog"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-7 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Read the blog
-              </Button>
-              <Button
-                size="lg"
-                variant="secondary"
-                className="rounded-full border border-border/60 bg-card/90 px-7 backdrop-blur-sm"
-                onPress={() => window.open("https://github.com/zhangxuan", "_blank", "noopener,noreferrer")}
+              </Link>
+              <a
+                href="https://github.com/zhangxuan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
               >
                 GitHub
-              </Button>
+              </a>
             </div>
           </div>
 

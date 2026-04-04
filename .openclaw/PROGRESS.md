@@ -69,8 +69,8 @@
 - [x] SEO 基线（站点级 metadata、canonical、Open Graph / Twitter、sitemap、robots.txt）
 - [x] RSS 生成
 - [x] 全文搜索（最小可用版：静态 JSON 索引 + 客户端标题/摘要/标签搜索）
-- [ ] 性能优化（ISR、图片懒加载、Bundle 分析）
-- [ ] Vercel 部署 + 自定义域名配置
+- [x] 性能优化（ISR / 缓存策略已落地，首页与博客列表客户端包袱已明显减轻；图片项暂未深挖，因当前站内几乎无内容图片）
+- [ ] Vercel 部署 + 自定义域名配置（首次 production deploy 已成功；真正可用的线上别名为 `https://blueblog-theta.vercel.app`。原先误把 `app/` 子目录连成独立项目导致整站 404，已改为从仓库根目录重新 link 到 `blues-projects-90e3f68b/blueblog` 并修复上线。自定义域名仍待用户决定域名 / DNS 权限后继续）
 
 ## 🎯 里程碑
 
@@ -135,6 +135,28 @@
 - 当前 Phase 5 已完成的可见产物：站点级 SEO 基线、动态 `feed.xml`、静态搜索索引与博客搜索最小可用版均已落地并通过本轮回归。
 - 当前未完成项保持不变：性能优化（缓存 / 图片 / bundle）与 Vercel 部署 / 域名接入仍待下一轮推进。
 - 结论：Phase 5 已完成第一批高价值基础设施与发现链路收尾，项目现在适合转入性能收口和上线准备，不要再重复折腾已经验收过的基础功能。
+
+### 2026-04-04（周六）14:30 — Phase 5 第5轮：性能优化落地
+- 完成 **内容缓存与 ISR 策略**：`lib/posts.ts` 改为使用 `unstable_cache` 缓存文章文件读取与 frontmatter 解析，`lib/search.ts` 也追加 1 小时缓存，避免博客列表、RSS、搜索索引、sitemap 每次请求都重新扫磁盘和跑 `gray-matter`。
+- 完成 **博客路由 revalidate 收口**：`/blog`、`/blog/[slug]`、`/sitemap.xml` 统一声明 `revalidate = 3600`，让内容型页面走稳定的 ISR，而不是每次都现算。
+- 完成 **首屏 JS 减负**：`components/ThemeToggle.tsx`、`components/home-hero.tsx`、`components/post-list.tsx` 去掉对 HeroUI 客户端组件的依赖，首页 CTA、主题切换、博客搜索和列表交互改为原生元素，减少无谓的前端负重。
+- 构建结果确认优化有效：首页 `First Load JS` 从 **130 kB → 106 kB**，博客列表页从 **135 kB → 104 kB**；这才像个博客，不是穿着举重服跑步。
+- 图片优化结论：当前站内缺少真实文章封面或内容图片，暂无可做的 `next/image` 高价值改造项；本轮优先把真正影响首屏和服务端重复计算的包袱先砍掉。
+- 完成 **运行态回归与证据归档**：启动 `npm run dev -- --port 3010` 后实际访问 `/`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/feed.xml`、`/search-index.json`，全部返回 `200`；新增 `.openclaw/artifacts/2026-04-04-round5/`，保存对应 headers/body 证据与 `home-desktop.png`、`blog-desktop.png`、`post-desktop.png`、`feed-desktop.png` 截图。
+- 完成 **部署前检查**：确认仓库内尚无 `.vercel/` 或 `vercel.json`；通过 `npx vercel --version` 验证 CLI 可用，但 `npx vercel whoami` 返回 `No existing credentials found`，当时阻塞在 Vercel 账号未登录，无法继续 `link` / `deploy`。
+- 当前 Phase 5 的剩余项缩减为：Vercel 项目接入 / 首次部署 / 自定义域名接入（待用户完成 Vercel 登录后继续）。
+
+### 2026-04-04（周六）14:20 — Phase 5 第6轮：Vercel 项目关联完成
+- 完成 **Vercel 登录校验**：`npx vercel whoami` 现已返回 `blue-a11y`，说明用户刚补完登录，这次总算不是空气授权。
+- 初次在 `app/` 下执行 `npx vercel link --yes`，项目被关联到 `blues-projects-90e3f68b/app`，但这其实把 Next.js 的 `app/` 目录错当成仓库根，属于目录选错的低级坑。
+- 直接从该错误关联发起 production deploy 后，线上 `/`、`/blog`、文章页、`/feed.xml`、`/search-index.json` 全部返回 `404`，确认问题不是代码炸了，而是项目根目录配错了。
+- 随后在仓库根目录重新执行 `npx vercel link --yes`，Vercel 正确识别为 Next.js 项目，并重新关联到 `blues-projects-90e3f68b/blueblog`；后续 deploy 全部以这个根项目为准。
+
+### 2026-04-04（周六）14:24 — Phase 5 第7轮：首次 production 部署成功并完成线上验证
+- 完成 **首次 production deploy**：在仓库根目录执行 `npx vercel deploy --prod --yes`，产出 deployment `https://blueblog-17nzgbht1-blues-projects-90e3f68b.vercel.app`。该 deployment 直链受 Vercel 访问保护返回 `401`，但公开 production alias `https://blueblog-theta.vercel.app` 已可正常访问。
+- 完成 **线上关键路径实测**：使用 Python 实际请求 `https://blueblog-theta.vercel.app/`、`/blog`、`/blog/2026-03-30-shipping-clean-next-js-layouts`、`/feed.xml`、`/search-index.json`，全部返回 `200`，内容类型分别为 HTML / RSS XML / JSON，说明首页、博客列表、文章详情、RSS、搜索索引都在线。
+- 构建链路补充说明：`vercel deploy` CLI 末尾两次出现 `socket hang up`，但 `npx vercel inspect blueblog-17nzgbht1-blues-projects-90e3f68b.vercel.app` 已确认部署最终状态为 `Ready`，属于 CLI 轮询阶段抽风，不影响最终上线结果。
+- 自定义域名暂未推进：当前仍需要用户明确要绑定哪个域名，以及是否具备对应 DNS 管理权限；这个不能替用户瞎猜。
 
 ### 2026-04-04（周六）04:00 — Phase 4 完成验收与文案收尾
 - 完成 `/showcase` 文案与验收面板重构：将主题切换实验室的可见文案统一为简洁专业英文，保留 HeroUI v3 compound pattern、实时主题预览、表单反馈与完成度展示。
