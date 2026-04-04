@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { Button, Chip } from "@heroui/react";
 import { siteConfig } from "@/lib/site";
 
 const socialLinks = [
@@ -17,9 +20,9 @@ export function HomeHero() {
         <div className="flex w-full flex-col gap-10">
           <div className="space-y-8">
             <div className="fade-in space-y-6">
-              <span className="inline-flex rounded-full border border-border/60 bg-card/90 px-3.5 py-1.5 text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase backdrop-blur-sm">
+              <Chip variant="secondary" className="w-fit rounded-full border border-border/60 bg-card/90 px-3.5 py-1.5 text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase backdrop-blur-sm">
                 Frontend Engineer
-              </span>
+              </Chip>
 
               <h1 className="text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl leading-[1.1]">
                 Hi, I&apos;m{" "}
@@ -35,17 +38,21 @@ export function HomeHero() {
             </div>
 
             <div className="fade-in fade-in-delay-2 flex flex-wrap items-center gap-3">
-              <Link
-                href="/blog"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-accent/18 bg-accent/12 px-7 text-sm font-medium text-accent shadow-[0_18px_40px_-24px_oklch(from_var(--accent)_l_c_h/0.6)] transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/28 hover:bg-accent/16"
-              >
-                Read the blog
+              <Link href="/blog">
+                <Button
+                  variant="secondary"
+                  className="min-h-12 rounded-full border border-accent/18 bg-accent/12 px-7 text-sm font-medium text-accent shadow-[0_18px_40px_-24px_oklch(from_var(--accent)_l_c_h/0.6)] transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/28 hover:bg-accent/16"
+                >
+                  Read the blog
+                </Button>
               </Link>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
-              >
-                Email Blue
+              <a href={`mailto:${siteConfig.email}`}>
+                <Button
+                  variant="outline"
+                  className="min-h-12 rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
+                >
+                  Email Blue
+                </Button>
               </a>
             </div>
           </div>

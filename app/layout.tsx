@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNavbar } from "@/components/site-navbar";
 import { getOgImageUrl, siteConfig } from "@/lib/site";
+import { getThemeScript } from "@/lib/theme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,14 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const themeScript = `
-(() => {
-  const storedTheme = window.localStorage.getItem("blueblog-theme");
-  const theme = storedTheme === "dark" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", theme);
-  document.documentElement.style.colorScheme = theme;
-})();
-`;
+const themeScript = getThemeScript();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -90,6 +84,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
       data-theme="light"
+      data-theme-preference="system"
     >
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

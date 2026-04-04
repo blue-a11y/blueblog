@@ -158,12 +158,19 @@ types/
 ### 搜索
 - `app/search-index.json/route.ts` 提供静态索引
 - `components/post-list.tsx` 在客户端做标题 / 描述 / 摘要 / 标签匹配
+- 博客列表的输入框、筛选按钮、卡片和标签已在 2026-04-04 晚些时候收口为 HeroUI Input / Button / Card / Chip
 - 目前是最小可用版，不是全文搜索引擎
 
 ### Vercel
 - 已完成项目 link 与 production deploy
 - 历史坑：千万别在 `app/` 子目录里执行 `vercel link/deploy`，那会把 Next.js 的 `app/` 目录误当项目根，直接 404，低级得离谱
 - 必须在仓库根目录执行部署命令
+
+### 主题系统
+- 主题核心逻辑已收口到 `lib/theme.ts`
+- 根布局 `app/layout.tsx` 会在首屏注入主题脚本，优先恢复 `localStorage` 中的 `light / dark / system` 偏好，减少首次加载闪烁
+- 导航中的 `ThemeToggle` 已改为 HeroUI Tabs，支持 `light / dark / system` 三态
+- `system` 模式下会监听 `prefers-color-scheme` 变化，并同步 `data-theme` / `color-scheme`
 
 ### Speed Insights
 - 已安装 `@vercel/speed-insights`

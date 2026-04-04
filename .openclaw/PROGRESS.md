@@ -184,6 +184,15 @@
 - 当前线上状态：deployment 在 Vercel 中为 `Ready`；但从未登录的外部 HTTP 请求看，`blueblog.me` 返回 `401`（Vercel SSO / Deployment Protection 页面），说明现在的阻塞点不是代码或部署失败，而是线上访问保护策略仍开着。
 - 本轮完成后，项目已具备“用户自己继续接手开发”的基本文档条件，不再只是靠任务日志硬猜上下文。
 
+### 2026-04-04（周六）16:40 — Phase 5 第15轮：HeroUI UI 架构收口 + 主题切换重做
+- 按 HeroUI v3 要求重构主题切换：新增 `lib/theme.ts` 统一主题偏好、解析逻辑与首屏脚本；`app/layout.tsx` 改为注入三态主题初始化脚本，不再把 `system` 粗暴降级成 `light`。
+- `components/ThemeToggle.tsx` 已从手写按钮切换为 **HeroUI Tabs**，提供 `light / dark / system` 三态；状态写入 `localStorage`，并在 `system` 模式下监听 `prefers-color-scheme` 变化，同步更新 `data-theme` 与 `color-scheme`。
+- 首页 `components/home-hero.tsx` 把手写 badge / CTA 收口为 **HeroUI Chip + Button**；保留原本克制的玻璃感与圆角气质，没有把首页硬改成组件库 demo 墙。
+- 博客列表 `components/post-list.tsx` 把手写搜索框 / 筛选按钮 / 空状态按钮 / 文章卡标签与卡片结构改为 **HeroUI Input + Button + Chip + Card**；交互逻辑不变，但组件层终于不再像手搓页面练习。
+- 顶部导航 `components/site-navbar.tsx` 的移动端菜单按钮改为 **HeroUI Button**，减少原生按钮散落。
+- 验证通过：`npm run lint` ✅、`npm run build` ✅、`npm run dev -- --port 3070` 后实测 `/`、`/blog`、`/about`、`/blog/2026-03-30-shipping-clean-next-js-layouts` 全部返回 `200`；并保存运行态截图到 `.openclaw/artifacts/2026-04-04-ui-refactor/`。
+- 主题切换验证结论：已实测首页主题 Tabs 可切到 `light / dark / system` 三态；代码层与运行态均确认 `system` 会持久化为偏好值，并在首屏脚本 / 客户端监听中跟随系统主题解析，不再闪屏也不再只有假两态。
+
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
 - 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。
 - 本地重新执行 `npm run build` ✅，构建产物正常；同时启动 `npm run dev -- --port 3030`，实际打开首页并截图归档到 `.openclaw/artifacts/2026-04-04-cta-deploy/home-cta-local.png`，确认首页 CTA 视觉已按预期呈现。

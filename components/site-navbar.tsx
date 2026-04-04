@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -63,15 +64,17 @@ export function SiteNavbar() {
 
           <div className="relative flex items-center gap-1.5">
             <ThemeToggle />
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-white/8 text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10 md:hidden"
+            <Button
+              isIconOnly
+              variant="ghost"
+              onPress={() => setMenuOpen((v) => !v)}
+              className="h-9 w-9 rounded-full border border-transparent bg-white/8 text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10 md:hidden"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-site-menu"
             >
               <span className="text-sm leading-none">{menuOpen ? "✕" : "☰"}</span>
-            </button>
+            </Button>
           </div>
         </nav>
       </div>
