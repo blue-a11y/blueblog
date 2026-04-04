@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Chip, Input } from "@heroui/react";
 import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
 import { formatPostDate } from "@/lib/format";
-import { useI18n } from "@/providers/i18n-provider";
+import { useTranslations } from "next-intl";
 import type { BlogSearchEntry, PostSummary } from "@/types/post";
 
 const INITIAL_VISIBLE_POSTS = 6;
@@ -46,7 +46,7 @@ function FilterButton({
 }
 
 export function PostList({ posts, tags, searchIndex }: PostListProps) {
-  const { t } = useI18n();
+  const t = useTranslations();
   const [activeTag, setActiveTag] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_POSTS);

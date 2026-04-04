@@ -1,5 +1,5 @@
-import { HomeHero } from "@/components/layout/home-hero";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <HomeHero />;
+export default function RootPage() {
+  redirect("/en");
 }

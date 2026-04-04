@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button, Chip } from "@heroui/react";
 import { siteConfig } from "@/lib/site";
-import { useI18n } from "@/providers/i18n-provider";
+import { useTranslations } from "next-intl";
 
 const socialLinks = [
   { name: "Email", href: `mailto:${siteConfig.email}`, icon: <MailIcon /> },
@@ -11,7 +11,7 @@ const socialLinks = [
 ];
 
 export function HomeHero() {
-  const { t } = useI18n();
+  const t = useTranslations();
 
   return (
     <main className="relative isolate overflow-hidden">

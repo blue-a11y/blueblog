@@ -5,8 +5,10 @@ import { Button } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
-import { useI18n } from "@/providers/i18n-provider";
-import { localeNames } from "@/lib/i18n-config";
+import { useTranslations } from "next-intl";
+import { locales, localeNames } from "@/lib/i18n-config";
+import { useParams } from "next/navigation";
+import type { Locale } from "@/lib/i18n-config";
 
 type NavLinkProps = {
   href: string;
@@ -43,15 +45,20 @@ function NavLink({ href, label, isActive, onClick, variant = "desktop" }: NavLin
 
 export function SiteNavbar() {
   const pathname = usePathname();
+  const params = useParams();
+  const locale = (params?.locale as Locale) || "en";
   const [menuOpen, setMenuOpen] = useState(false);
-  const { locale, setLocale, t } = useI18n();
+  const t = useTranslations();
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
-
-  const toggleLocale = () => {
-    setLocale(locale === "en" ? "zh" : "en");
+  const isActive = (href: string) => {
+    const pathWithoutLocale = pathname.replace(/^\/(en|zh)/, "") || "/";
+    return href === "/" ? pathWithoutLocale === "/" : pathWithoutLocale.startsWith(href);
   };
+
+  const otherLocale = locale === "en" ? "zh" : "en";
+  const otherLocaleLabel = localeNames[otherLocale];
+  const currentPathWithoutLocale = pathname.replace(/^\/(en|zh)/, "") || "/";
+  const switchLocaleHref = `/${otherLocale}${currentPathWithoutLocale}`;
 
   const navigationItems = [
     { href: "/", label: t("nav.home") },
@@ -94,13 +101,14 @@ export function SiteNavbar() {
 
           <div className="relative flex items-center gap-1.5">
             <ThemeToggle />
-            <Button
-              variant="ghost"
-              onPress={toggleLocale}
-              className="h-9 rounded-full border border-transparent bg-white/8 px-3 text-xs font-medium text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10"
-            >
-              {localeNames[locale === "en" ? "zh" : "en"]}
-            </Button>
+            <Link href={switchLocaleHref}>
+              <Button
+                variant="ghost"
+                className="h-9 rounded-full border border-transparent bg-white/8 px-3 text-xs font-medium text-foreground/62 transition-all duration-200 hover:border-border/70 hover:bg-white/14 hover:text-foreground dark:bg-white/6 dark:hover:bg-white/10"
+              >
+                {otherLocaleLabel}
+              </Button>
+            </Link>
             <Button
               isIconOnly
               variant="ghost"
