@@ -159,6 +159,13 @@
 - 构建链路补充说明：`vercel deploy` CLI 末尾两次出现 `socket hang up`，但 `npx vercel inspect blueblog-17nzgbht1-blues-projects-90e3f68b.vercel.app` 已确认部署最终状态为 `Ready`，属于 CLI 轮询阶段抽风，不影响最终上线结果。
 - 自定义域名暂未推进：当前仍需要用户明确要绑定哪个域名，以及是否具备对应 DNS 管理权限；这个不能替用户瞎猜。
 
+### 2026-04-04（周六）15:18 — Phase 5 第10轮：Vercel Analytics 接入完成
+- 按 Vercel Analytics 官方 Quickstart 的 Next.js 推荐接法完成接入：安装 `@vercel/analytics`，并在根布局 `app/layout.tsx` 中引入 `Analytics` 组件，挂在 `</body>` 前，没多装乱七八糟的 Speed Insights。
+- 本轮代码改动保持最小：业务页面、样式、路由都没碰，只补了 production 所需的埋点入口；这才叫正常人接 SDK，不是把项目翻修一遍。
+- 验证通过：`npm run lint` ✅、`npm run build` ✅。由于仅增加根布局组件注入，且构建链路与类型检查均通过，本轮无需额外起 dev server 做重复体力活。
+- 部署状态：项目当前已接入 Vercel production，本轮在仓库根目录完成新的 production deploy，确保 Analytics 代码已真实上线到公开站点。
+- 面板说明：代码接入后，Vercel Web Analytics 是否开始出数还取决于项目面板里是否已启用对应功能；如果该项目此前没开过 Analytics，用户仍需去 Vercel 项目设置里点一下启用。
+
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
 - 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。
 - 本地重新执行 `npm run build` ✅，构建产物正常；同时启动 `npm run dev -- --port 3030`，实际打开首页并截图归档到 `.openclaw/artifacts/2026-04-04-cta-deploy/home-cta-local.png`，确认首页 CTA 视觉已按预期呈现。
