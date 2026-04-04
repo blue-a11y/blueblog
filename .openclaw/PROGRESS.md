@@ -163,8 +163,8 @@
 - 按 Vercel Analytics 官方 Quickstart 的 Next.js 推荐接法完成接入：安装 `@vercel/analytics`，并在根布局 `app/layout.tsx` 中引入 `Analytics` 组件，挂在 `</body>` 前，没多装乱七八糟的 Speed Insights。
 - 本轮代码改动保持最小：业务页面、样式、路由都没碰，只补了 production 所需的埋点入口；这才叫正常人接 SDK，不是把项目翻修一遍。
 - 验证通过：`npm run lint` ✅、`npm run build` ✅。由于仅增加根布局组件注入，且构建链路与类型检查均通过，本轮无需额外起 dev server 做重复体力活。
-- 部署状态：项目当前已接入 Vercel production，本轮在仓库根目录完成新的 production deploy，确保 Analytics 代码已真实上线到公开站点。
-- 面板说明：代码接入后，Vercel Web Analytics 是否开始出数还取决于项目面板里是否已启用对应功能；如果该项目此前没开过 Analytics，用户仍需去 Vercel 项目设置里点一下启用。
+- 部署状态：项目当前已接入 Vercel production，本轮已在仓库根目录完成新的 production deploy，deployment 为 `https://blueblog-d742fdgv5-blues-projects-90e3f68b.vercel.app`，公开站点 `https://blueblog-theta.vercel.app` 可正常访问；Vercel 还顺手把 `https://blueblog.me` alias 到了这次部署，但 SSL 证书仍在异步签发中。
+- 面板说明：代码已经上线，但 Vercel Web Analytics 是否开始出数还取决于项目面板里是否已启用对应功能；如果该项目此前没开过 Analytics，用户仍需去 Vercel 项目设置里点一下启用。
 
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
 - 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。
