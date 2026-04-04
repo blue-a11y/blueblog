@@ -18,20 +18,13 @@ export function ThemeToggle() {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const initialPreference = getStoredThemePreference(window.localStorage);
     applyThemePreference(initialPreference);
-
     setThemePreference(initialPreference);
 
-    const handleSystemThemeChange = (event: MediaQueryListEvent) => {
-      const nextPreference = getStoredThemePreference(window.localStorage);
-      if (nextPreference !== "system") return;
-
-      const nextResolvedTheme = nextPreference === "system" 
-        ? (event.matches ? "dark" : "light") 
-        : nextPreference;
-      document.documentElement.setAttribute("data-theme", nextResolvedTheme);
-      document.documentElement.setAttribute("data-theme-preference", "system");
-      document.documentElement.style.colorScheme = nextResolvedTheme;
-      setThemePreference("system");
+    const handleSystemThemeChange = () => {
+      const currentPreference = getStoredThemePreference(window.localStorage);
+      if (currentPreference === "system") {
+        applyThemePreference("system");
+      }
     };
 
     mediaQuery.addEventListener("change", handleSystemThemeChange);
@@ -54,14 +47,14 @@ export function ThemeToggle() {
       className="shrink-0"
     >
       <Tabs.ListContainer className="shrink-0">
-        <Tabs.List className="gap-1 rounded-full bg-zinc-100 p-1 dark:bg-zinc-900">
-          <Tabs.Tab key="light" className="rounded-full px-3 data-[selected=true]:bg-white data-[selected=true]:text-zinc-900 data-[selected=true]:shadow-sm dark:data-[selected=true]:bg-zinc-800 dark:data-[selected=true]:text-zinc-100">
+        <Tabs.List className="*:data-[selected=true]:text-foreground *:h-7 *:w-7 *:min-w-0 *:px-0 h-9 gap-1 rounded-full bg-zinc-100 p-1 dark:bg-zinc-900">
+          <Tabs.Tab key="light">
             <SunIcon className="h-4 w-4" />
-            <Tabs.Indicator className="inset-0 rounded-full bg-white dark:bg-zinc-800" />
+            <Tabs.Indicator />
           </Tabs.Tab>
-          <Tabs.Tab key="dark" className="rounded-full px-3 data-[selected=true]:bg-white data-[selected=true]:text-zinc-900 data-[selected=true]:shadow-sm dark:data-[selected=true]:bg-zinc-800 dark:data-[selected=true]:text-zinc-100">
+          <Tabs.Tab key="dark">
             <MoonIcon className="h-4 w-4" />
-            <Tabs.Indicator className="inset-0 rounded-full bg-white dark:bg-zinc-800" />
+            <Tabs.Indicator />
           </Tabs.Tab>
         </Tabs.List>
       </Tabs.ListContainer>
