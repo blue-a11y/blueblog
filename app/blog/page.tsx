@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PostList } from "@/components/post-list";
+import { PostList } from "@/components/blog/post-list";
 
 export const revalidate = 3600;
 import { getAllTags, getPostSummaries } from "@/lib/posts";

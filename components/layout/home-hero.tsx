@@ -62,12 +62,17 @@ export function HomeHero() {
               <a
                 key={link.name}
                 href={link.href}
-                aria-label={link.name}
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
               >
-                {link.icon}
+                <Button
+                  isIconOnly
+                  variant="ghost"
+                  aria-label={link.name}
+                  className="rounded-full text-muted-foreground hover:text-foreground"
+                >
+                  {link.icon}
+                </Button>
               </a>
             ))}
             <span className="text-sm text-muted-foreground/60">

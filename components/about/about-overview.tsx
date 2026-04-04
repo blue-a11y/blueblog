@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card } from "@heroui/react";
+import { Button, Card, Chip } from "@heroui/react";
 import { siteConfig } from "@/lib/site";
 
 type SkillGroup = {
@@ -81,12 +81,12 @@ export function AboutOverview() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {group.items.map((item) => (
-                      <span
+                      <Chip
                         key={item}
                         className="rounded-full bg-muted/60 px-3 py-1 text-sm text-foreground/85"
                       >
                         {item}
-                      </span>
+                      </Chip>
                     ))}
                   </div>
                 </Card.Content>

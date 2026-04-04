@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 
 const navigationItems = [
   { href: "/", label: "Home" },

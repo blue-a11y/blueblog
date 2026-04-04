@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypePrettyCode, { type Options as RehypePrettyCodeOptions } from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
-import { mdxComponents } from "@/components/mdx-components";
+import { mdxComponents } from "@/components/blog/mdx-components";
 
 const prettyCodeOptions: RehypePrettyCodeOptions = {
   theme: {
