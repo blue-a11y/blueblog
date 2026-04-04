@@ -159,6 +159,13 @@
 - 构建链路补充说明：`vercel deploy` CLI 末尾两次出现 `socket hang up`，但 `npx vercel inspect blueblog-17nzgbht1-blues-projects-90e3f68b.vercel.app` 已确认部署最终状态为 `Ready`，属于 CLI 轮询阶段抽风，不影响最终上线结果。
 - 自定义域名暂未推进：当前仍需要用户明确要绑定哪个域名，以及是否具备对应 DNS 管理权限；这个不能替用户瞎猜。
 
+### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
+- 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。
+- 本地重新执行 `npm run build` ✅，构建产物正常；同时启动 `npm run dev -- --port 3030`，实际打开首页并截图归档到 `.openclaw/artifacts/2026-04-04-cta-deploy/home-cta-local.png`，确认首页 CTA 视觉已按预期呈现。
+- 更新项目文档后，提交并推送本轮修复，随后在 **仓库根目录** 重新执行 production deploy，避免再把 `app/` 子目录错连成独立项目。
+- 线上验证完成：`https://blueblog-theta.vercel.app/` 可正常访问，首页主 CTA 新样式已上线；额外保存线上截图用于留档。
+- 结论：这次是一次标准的“代码早就改了，但部署没跟上”的锅，现已补齐提交、推送、生产部署和线上验收链路。
+
 ### 2026-04-04（周六）14:55 — Phase 5 第8轮：主题颜色回归修复
 - 按要求先启动 `npm run dev -- --port 3020`，用 Playwright 实际截图检查首页、`/blog`、文章页在明/暗主题下的真实渲染，而不是靠读代码瞎猜。
 - 定位到本轮真正的问题不在布局，而在 **主题 token 对比度偏弱**：亮色模式里次级文字 / 边框 / 卡片层级过淡，暗色模式里卡片、正文容器与页面背景过近，文章页正文卡和代码块像糊在一起。

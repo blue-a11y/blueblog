@@ -36,7 +36,7 @@ export function HomeHero() {
             <div className="fade-in fade-in-delay-2 flex flex-wrap items-center gap-3">
               <Link
                 href="/blog"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-7 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-accent/18 bg-accent/12 px-7 text-sm font-medium text-accent shadow-[0_18px_40px_-24px_oklch(from_var(--accent)_l_c_h/0.6)] transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/28 hover:bg-accent/16"
               >
                 Read the blog
               </Link>
