@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Button, Card, Chip, Input } from "@heroui/react";
+import { Button, Chip } from "@heroui/react";
 import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
 import { formatPostDate } from "@/lib/format";
 import { useTranslations } from "next-intl";
@@ -116,19 +116,39 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <FilterButton active={activeTag === "all"} onPress={() => setActiveTag("all")}>{t("blog.all")}</FilterButton>
+            <Chip
+              size="sm"
+              variant={activeTag === "all" ? "solid" : "flat"}
+              color={activeTag === "all" ? "primary" : "default"}
+              className="cursor-pointer select-none transition-transform active:scale-95"
+              onPress={() => setActiveTag("all")}
+            >
+              {t("blog.all")}
+            </Chip>
             {tags.map((tag) => (
-              <FilterButton key={tag} active={activeTag === tag} onPress={() => setActiveTag(tag)}>
+              <Chip
+                key={tag}
+                size="sm"
+                variant={activeTag === tag ? "solid" : "flat"}
+                color={activeTag === tag ? "primary" : "default"}
+                className="cursor-pointer select-none transition-transform active:scale-95"
+                onPress={() => setActiveTag(tag)}
+              >
                 {tag}
-              </FilterButton>
+              </Chip>
             ))}
             {isFiltered ? (
-              <FilterButton muted onPress={() => {
-                setActiveTag("all");
-                setQuery("");
-              }}>
+              <Chip
+                size="sm"
+                variant="flat"
+                className="cursor-pointer select-none text-muted-foreground transition-transform active:scale-95"
+                onPress={() => {
+                  setActiveTag("all");
+                  setQuery("");
+                }}
+              >
                 {t("blog.clear")}
-              </FilterButton>
+              </Chip>
             ) : null}
           </div>
         </div>
@@ -168,12 +188,14 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                   <div className="relative z-10 flex flex-col gap-3">
                     <div className="flex flex-wrap gap-2">
                       {post.tags.slice(0, 2).map((tag) => (
-                        <span
+                        <Chip
                           key={tag}
-                          className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-medium tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                          size="sm"
+                          variant="flat"
+                          className="bg-zinc-100 text-[10px] font-medium tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                         >
                           {tag}
-                        </span>
+                        </Chip>
                       ))}
                     </div>
                     <div className="flex flex-col gap-1">
@@ -205,8 +227,8 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
             {hasMore ? (
               <div className="flex justify-center">
                 <Button
-                  variant="outline"
-                  className="rounded-full border border-border/70 bg-card/80 px-8 py-3 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-muted/70"
+                  variant="faded"
+                  className="rounded-full px-8 text-sm font-medium text-foreground"
                   onPress={() => setVisibleCount((count) => count + LOAD_MORE_COUNT)}
                 >
                   {t("blog.loadMore")}
