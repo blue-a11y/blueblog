@@ -6,35 +6,31 @@ import {
   applyThemePreference,
   DEFAULT_THEME_PREFERENCE,
   getStoredThemePreference,
-  resolveTheme,
   THEME_STORAGE_KEY,
-  themeOptions,
-  type ResolvedTheme,
   type ThemePreference,
 } from "@/lib/theme";
-import { SunIcon, MoonIcon, MonitorIcon } from "@/components/common/ThemeIcons";
+import { SunIcon, MoonIcon } from "@/components/common/ThemeIcons";
 
 export function ThemeToggle() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const initialPreference = getStoredThemePreference(window.localStorage);
-    const initialResolvedTheme = applyThemePreference(initialPreference);
+    applyThemePreference(initialPreference);
 
     setThemePreference(initialPreference);
-    setResolvedTheme(initialResolvedTheme);
 
     const handleSystemThemeChange = (event: MediaQueryListEvent) => {
       const nextPreference = getStoredThemePreference(window.localStorage);
       if (nextPreference !== "system") return;
 
-      const nextResolvedTheme = resolveTheme("system", event.matches);
+      const nextResolvedTheme = nextPreference === "system" 
+        ? (event.matches ? "dark" : "light") 
+        : nextPreference;
       document.documentElement.setAttribute("data-theme", nextResolvedTheme);
       document.documentElement.setAttribute("data-theme-preference", "system");
       document.documentElement.style.colorScheme = nextResolvedTheme;
-      setResolvedTheme(nextResolvedTheme);
       setThemePreference("system");
     };
 
@@ -44,18 +40,10 @@ export function ThemeToggle() {
 
   const handleThemeChange = (key: Key | null) => {
     if (!key) return;
-
     const nextPreference = key as ThemePreference;
     window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
-    const nextResolvedTheme = applyThemePreference(nextPreference);
+    applyThemePreference(nextPreference);
     setThemePreference(nextPreference);
-    setResolvedTheme(nextResolvedTheme);
-  };
-
-  const iconMap = {
-    light: SunIcon,
-    dark: MoonIcon,
-    system: MonitorIcon,
   };
 
   return (
@@ -64,7 +52,6 @@ export function ThemeToggle() {
       selectedKey={themePreference === "system" ? "light" : themePreference}
       onSelectionChange={handleThemeChange}
       className="shrink-0"
-      variant="light"
     >
       <Tabs.ListContainer className="shrink-0">
         <Tabs.List className="gap-1 rounded-full bg-zinc-100 p-1 dark:bg-zinc-900">
