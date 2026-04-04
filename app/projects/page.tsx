@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import { ProjectShowcase } from "@/components/projects/project-showcase";
-import { getOgImageUrl } from "@/lib/site";
+import { getOgImageUrl, siteConfig } from "@/lib/site";
+
+const projectsDescription = "Selected product, frontend, and interaction work shipped across experiments and production surfaces.";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Selected product, frontend, and interaction work shipped across experiments and production surfaces.",
+  description: projectsDescription,
   alternates: {
     canonical: "/projects",
   },
   openGraph: {
-    title: "BlueBlog projects",
-    description: "Selected product, frontend, and interaction work shipped across experiments and production surfaces.",
+    title: `${siteConfig.personName}'s projects`,
+    description: projectsDescription,
     url: "/projects",
-    images: [getOgImageUrl("Projects by 张轩")],
+    images: [getOgImageUrl(`Projects by ${siteConfig.personName}`)],
   },
 };
 

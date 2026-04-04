@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import { AboutOverview } from "@/components/about/about-overview";
-import { getOgImageUrl } from "@/lib/site";
+import { getOgImageUrl, siteConfig } from "@/lib/site";
+
+const aboutDescription = `Background, skills, selected experience, and contact details for ${siteConfig.personName}.`;
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Background, skills, selected experience, and contact details for 张轩.",
+  description: aboutDescription,
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About 张轩",
-    description: "Background, skills, selected experience, and contact details for 张轩.",
+    title: `About ${siteConfig.personName}`,
+    description: aboutDescription,
     url: "/about",
-    images: [getOgImageUrl("About 张轩")],
+    images: [getOgImageUrl(`About ${siteConfig.personName}`)],
   },
 };
 

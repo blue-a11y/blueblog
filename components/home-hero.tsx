@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { siteConfig } from "@/lib/site";
 
-const socialLinks = [{ name: "Email", href: "mailto:zhangxuan.nyuk@gmail.com", icon: <MailIcon /> }];
+const socialLinks = [
+  { name: "Email", href: `mailto:${siteConfig.email}`, icon: <MailIcon /> },
+  { name: "GitHub", href: siteConfig.github, icon: <GitHubIcon /> },
+];
 
 export function HomeHero() {
   return (
@@ -20,7 +24,7 @@ export function HomeHero() {
               <h1 className="text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl leading-[1.1]">
                 Hi, I&apos;m{" "}
                 <span className="bg-gradient-to-r from-accent to-[oklch(from_var(--accent)_calc(l+0.08)_calc(c*0.8)_calc(h-15))] bg-clip-text text-transparent">
-                  张轩
+                  {siteConfig.personName}
                 </span>
                 .
               </h1>
@@ -38,10 +42,10 @@ export function HomeHero() {
                 Read the blog
               </Link>
               <a
-                href="mailto:zhangxuan.nyuk@gmail.com"
+                href={`mailto:${siteConfig.email}`}
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
               >
-                Email
+                Email Blue
               </a>
             </div>
           </div>
@@ -74,6 +78,14 @@ function MailIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="size-[18px]">
       <rect x="3" y="5" width="18" height="14" rx="3" />
       <path strokeLinecap="round" strokeLinejoin="round" d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="size-[18px]" aria-hidden="true">
+      <path d="M12 2C6.477 2 2 6.596 2 12.266c0 4.536 2.865 8.384 6.839 9.742.5.096.682-.223.682-.496 0-.245-.009-.894-.014-1.755-2.782.62-3.37-1.377-3.37-1.377-.455-1.187-1.11-1.503-1.11-1.503-.908-.638.069-.625.069-.625 1.004.072 1.532 1.057 1.532 1.057.892 1.57 2.341 1.116 2.91.854.091-.667.349-1.116.635-1.373-2.221-.261-4.555-1.14-4.555-5.073 0-1.121.39-2.037 1.029-2.754-.103-.262-.446-1.315.098-2.741 0 0 .84-.276 2.75 1.052A9.31 9.31 0 0 1 12 7.4c.85.004 1.706.118 2.504.346 1.908-1.328 2.747-1.052 2.747-1.052.546 1.426.203 2.479.1 2.741.64.717 1.027 1.633 1.027 2.754 0 3.943-2.338 4.808-4.566 5.063.359.319.679.948.679 1.911 0 1.379-.012 2.492-.012 2.83 0 .276.18.596.688.495C19.138 20.646 22 16.8 22 12.266 22 6.596 17.523 2 12 2Z" />
     </svg>
   );
 }

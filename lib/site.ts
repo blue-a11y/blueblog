@@ -4,19 +4,20 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://blueblog.me";
 
 export const siteConfig = {
   name: "BlueBlog",
+  personName: "Blue",
   feedPath: "/feed.xml",
   title: "BlueBlog · Frontend engineering, design systems, and product craft",
   description:
-    "Personal site for 张轩, focused on frontend engineering, design systems, interaction experiments, and technical writing.",
+    "Personal site for Blue, focused on frontend engineering, design systems, interaction experiments, and technical writing.",
   shortDescription: "Frontend engineering, design systems, interaction experiments, and technical writing.",
-  author: "张轩",
+  author: "Blue",
   locale: "en_US",
   url: baseUrl.replace(/\/$/, ""),
-  email: "zhangxuan.nyuk@gmail.com",
+  email: "xuanzhang194@gmail.com",
+  github: "https://github.com/blue-a11y",
   keywords: [
     "BlueBlog",
-    "张轩",
-    "zhangxuan",
+    "Blue",
     "frontend engineer",
     "Next.js blog",
     "React",

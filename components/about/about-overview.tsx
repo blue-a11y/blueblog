@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card } from "@heroui/react";
+import { siteConfig } from "@/lib/site";
 
 type SkillGroup = {
   title: string;
@@ -43,7 +44,8 @@ const timeline: TimelineEntry[] = [
 ];
 
 const contactLinks: { label: string; value: string; href: string; external?: boolean }[] = [
-  { label: "Email", value: "zhangxuan.nyuk@gmail.com", href: "mailto:zhangxuan.nyuk@gmail.com" },
+  { label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+  { label: "GitHub", value: "blue-a11y", href: siteConfig.github, external: true },
 ];
 
 export function AboutOverview() {
@@ -57,7 +59,7 @@ export function AboutOverview() {
           </h1>
           <div className="max-w-2xl space-y-4">
             <p className="text-lg leading-relaxed text-foreground/90">
-              I&apos;m a frontend engineer who cares about product surfaces that feel intentional — strong hierarchy, 
+              I&apos;m Blue, a frontend engineer who cares about product surfaces that feel intentional — strong hierarchy,
               quieter motion, durable code, and content that still makes sense when the project stops being a toy.
             </p>
             <p className="text-base leading-relaxed text-muted-foreground">
