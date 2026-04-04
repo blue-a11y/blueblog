@@ -14,6 +14,39 @@ const navigationItems = [
   { href: "/about", label: "About" },
 ];
 
+type NavLinkProps = {
+  href: string;
+  label: string;
+  isActive: boolean;
+  onClick?: () => void;
+  variant?: "desktop" | "mobile";
+};
+
+function NavLink({ href, label, isActive, onClick, variant = "desktop" }: NavLinkProps) {
+  const baseClasses = variant === "desktop"
+    ? "rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200"
+    : "rounded-[1.15rem] border px-4 py-3 text-sm font-medium transition-all duration-200";
+
+  const activeClasses = variant === "desktop"
+    ? "border-border/80 bg-white/20 text-foreground shadow-[0_10px_30px_-24px_var(--shadow)] dark:bg-white/10"
+    : "border-border/75 bg-white/20 text-foreground shadow-[0_12px_34px_-24px_var(--shadow)] dark:bg-white/10";
+
+  const inactiveClasses = variant === "desktop"
+    ? "border-transparent text-foreground/62 hover:border-border/70 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8"
+    : "border-transparent text-foreground/70 hover:border-border/65 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8";
+
+  return (
+    <Link
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      onClick={onClick}
+      className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
+    >
+      {label}
+    </Link>
+  );
+}
+
 export function SiteNavbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,24 +75,14 @@ export function SiteNavbar() {
           </Link>
 
           <div className="relative hidden items-center gap-1 md:flex">
-            {navigationItems.map((item) => {
-              const active = isActive(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
-                    active
-                      ? "border-border/80 bg-white/20 text-foreground shadow-[0_10px_30px_-24px_var(--shadow)] dark:bg-white/10"
-                      : "border-transparent text-foreground/62 hover:border-border/70 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                isActive={isActive(item.href)}
+              />
+            ))}
           </div>
 
           <div className="relative flex items-center gap-1.5">
@@ -101,25 +124,16 @@ export function SiteNavbar() {
           </div>
 
           <div className="relative flex flex-col gap-1.5">
-            {navigationItems.map((item) => {
-              const active = isActive(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  onClick={() => setMenuOpen(false)}
-                  className={`rounded-[1.15rem] border px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                    active
-                      ? "border-border/75 bg-white/20 text-foreground shadow-[0_12px_34px_-24px_var(--shadow)] dark:bg-white/10"
-                      : "border-transparent text-foreground/70 hover:border-border/65 hover:bg-white/12 hover:text-foreground dark:hover:bg-white/8"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                isActive={isActive(item.href)}
+                onClick={() => setMenuOpen(false)}
+                variant="mobile"
+              />
+            ))}
           </div>
         </div>
       )}

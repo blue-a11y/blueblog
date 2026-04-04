@@ -4,6 +4,9 @@ export type ResolvedTheme = "light" | "dark";
 export const THEME_STORAGE_KEY = "blueblog-theme";
 export const DEFAULT_THEME_PREFERENCE: ThemePreference = "system";
 
+// Icon-only theme options for UI components
+export const themeOptions: ThemePreference[] = ["light", "dark", "system"];
+
 export function isThemePreference(value: string | null): value is ThemePreference {
   return value === "light" || value === "dark" || value === "system";
 }

@@ -4,13 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Chip, Input } from "@heroui/react";
 import { createSearchLookup, matchesBlogSearch } from "@/lib/blog-search";
+import { formatPostDate } from "@/lib/format";
 import type { BlogSearchEntry, PostSummary } from "@/types/post";
-
-const dateFormatter = new Intl.DateTimeFormat("en", {
-  year: "numeric",
-  month: "short",
-  day: "2-digit",
-});
 
 const INITIAL_VISIBLE_POSTS = 6;
 const LOAD_MORE_COUNT = 6;
@@ -187,7 +182,7 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
                       </div>
 
                       <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-muted-foreground">
-                        <time>{dateFormatter.format(new Date(post.date))}</time>
+                        <time>{formatPostDate(post.date)}</time>
                         <span>·</span>
                         <span>{post.readingTime} min read</span>
                       </div>

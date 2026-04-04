@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type Key, type ReactElement, type SVGProps } from "react";
+import { useEffect, useState, type Key } from "react";
 import { Tabs } from "@heroui/react";
 import {
   applyThemePreference,
@@ -8,31 +8,11 @@ import {
   getStoredThemePreference,
   resolveTheme,
   THEME_STORAGE_KEY,
+  themeOptions,
   type ResolvedTheme,
   type ThemePreference,
 } from "@/lib/theme";
-
-const themeOptions: {
-  key: ThemePreference;
-  label: string;
-  Icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
-}[] = [
-  {
-    key: "light",
-    label: "Light",
-    Icon: SunIcon,
-  },
-  {
-    key: "dark",
-    label: "Dark",
-    Icon: MoonIcon,
-  },
-  {
-    key: "system",
-    label: "System",
-    Icon: MonitorIcon,
-  },
-];
+import { SunIcon, MoonIcon, MonitorIcon } from "@/components/common/ThemeIcons";
 
 export function ThemeToggle() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
@@ -72,6 +52,12 @@ export function ThemeToggle() {
     setResolvedTheme(nextResolvedTheme);
   };
 
+  const iconMap = {
+    light: SunIcon,
+    dark: MoonIcon,
+    system: MonitorIcon,
+  };
+
   return (
     <Tabs
       aria-label="Theme preference"
@@ -81,16 +67,16 @@ export function ThemeToggle() {
     >
       <Tabs.ListContainer className="shrink-0">
         <Tabs.List className="h-9 min-w-0 gap-0.5 rounded-full border border-border/60 bg-white/8 p-0.5 shadow-[0_10px_30px_-24px_var(--shadow)] backdrop-blur-md dark:bg-white/6">
-          {themeOptions.map((option) => {
-            const Icon = option.Icon;
-            const ariaLabel = option.key === "system"
-              ? `${option.label} theme (currently ${resolvedTheme})`
-              : `${option.label} theme`;
+          {themeOptions.map((key) => {
+            const Icon = iconMap[key];
+            const ariaLabel = key === "system"
+              ? `System theme (currently ${resolvedTheme})`
+              : `${key} theme`;
 
             return (
               <Tabs.Tab
-                id={option.key}
-                key={option.key}
+                id={key}
+                key={key}
                 aria-label={ariaLabel}
                 className="h-7 min-w-0 rounded-full border border-transparent px-0 text-foreground/68 transition-colors data-[hovered]:text-foreground data-[selected=true]:border-border/70 data-[selected=true]:bg-white/18 data-[selected=true]:text-foreground dark:data-[selected=true]:bg-white/10"
               >
@@ -103,31 +89,5 @@ export function ThemeToggle() {
         </Tabs.List>
       </Tabs.ListContainer>
     </Tabs>
-  );
-}
-
-function SunIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07 6.7 17.3M17.3 6.7l1.77-1.77" />
-    </svg>
-  );
-}
-
-function MoonIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
-    </svg>
-  );
-}
-
-function MonitorIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <rect x="3" y="4" width="18" height="12" rx="2" />
-      <path d="M8 20h8M12 16v4" />
-    </svg>
   );
 }
