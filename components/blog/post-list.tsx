@@ -161,38 +161,44 @@ export function PostList({ posts, tags, searchIndex }: PostListProps) {
           </Card>
         ) : (
           <>
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-y-12 gap-x-12 lg:grid-cols-2">
               {visiblePosts.map((post) => (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-                  <Card className="flex h-full rounded-[1.75rem] border border-border/60 bg-card/90 backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-border hover:shadow-[0_16px_48px_-16px_var(--shadow)]">
-                    <Card.Content className="flex h-full flex-col gap-4 p-6">
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags.slice(0, 2).map((tag) => (
-                          <Chip
-                            key={tag}
-                            variant="soft"
-                            className="rounded-full bg-muted/70 px-2.5 py-0.5 text-[11px] font-medium tracking-[0.12em] text-muted-foreground uppercase"
-                          >
-                            {tag}
-                          </Chip>
-                        ))}
+                <article key={post.slug} className="group relative flex flex-col items-start">
+                  <Link href={`/blog/${post.slug}`} className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 rounded-2xl bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50" />
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.slice(0, 2).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[10px] font-medium tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <h2 className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+                        <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
+                        {post.title}
+                      </h2>
+                      <time className="relative z-10 order-first mb-1 flex items-center gap-2 pl-3.5 text-sm text-zinc-400 dark:text-zinc-500">
+                        <span className="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
+                          <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
+                        </span>
+                        {formatPostDate(post.date)} <span className="text-zinc-300 dark:text-zinc-600">·</span> {post.readingTime} min
+                      </time>
+                      <p className="relative z-10 mt-2 line-clamp-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        {post.description}
+                      </p>
+                      <div className="relative z-10 mt-2 flex items-center text-sm font-medium text-teal-500">
+                        Read article
+                        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="ml-1 h-4 w-4 stroke-current">
+                          <path d="M6.75 5.75 9.25 8l-2.5 2.25" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </div>
-
-                      <div className="flex flex-1 flex-col gap-2">
-                        <h2 className="text-xl font-semibold tracking-[-0.02em] text-foreground transition-colors group-hover:text-accent">
-                          {post.title}
-                        </h2>
-                        <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">{post.description}</p>
-                      </div>
-
-                      <div className="mt-auto flex items-center gap-3 pt-2 text-xs text-muted-foreground">
-                        <time>{formatPostDate(post.date)}</time>
-                        <span>·</span>
-                        <span>{post.readingTime} {t("blog.minRead")}</span>
-                      </div>
-                    </Card.Content>
-                  </Card>
-                </Link>
+                    </div>
+                  </div>
+                </article>
               ))}
             </div>
 
