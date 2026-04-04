@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNavbar } from "@/components/site-navbar";
 import { getOgImageUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -98,7 +98,7 @@ export default function RootLayout({
           <SiteNavbar />
           <div className="pt-20">{children}</div>
         </div>
-        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
