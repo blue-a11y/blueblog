@@ -61,31 +61,21 @@ export function ThemeToggle() {
   return (
     <Tabs
       aria-label="Theme preference"
-      selectedKey={themePreference}
+      selectedKey={themePreference === "system" ? "light" : themePreference}
       onSelectionChange={handleThemeChange}
       className="shrink-0"
+      variant="light"
     >
       <Tabs.ListContainer className="shrink-0">
-        <Tabs.List className="h-9 min-w-0 gap-0.5 rounded-full border border-border/60 bg-white/8 p-0.5 shadow-[0_10px_30px_-24px_var(--shadow)] backdrop-blur-md dark:bg-white/6">
-          {themeOptions.map((key) => {
-            const Icon = iconMap[key];
-            const ariaLabel = key === "system"
-              ? `System theme (currently ${resolvedTheme})`
-              : `${key} theme`;
-
-            return (
-              <Tabs.Tab
-                id={key}
-                key={key}
-                aria-label={ariaLabel}
-                className="h-7 min-w-0 rounded-full border border-transparent px-0 text-foreground/68 transition-colors data-[hovered]:text-foreground data-[selected=true]:border-border/70 data-[selected=true]:bg-white/18 data-[selected=true]:text-foreground dark:data-[selected=true]:bg-white/10"
-              >
-                <span className="flex h-7 w-7 items-center justify-center">
-                  <Icon className="h-4 w-4" />
-                </span>
-              </Tabs.Tab>
-            );
-          })}
+        <Tabs.List className="gap-1 rounded-full bg-zinc-100 p-1 dark:bg-zinc-900">
+          <Tabs.Tab key="light" className="rounded-full px-3 data-[selected=true]:bg-white data-[selected=true]:text-zinc-900 data-[selected=true]:shadow-sm dark:data-[selected=true]:bg-zinc-800 dark:data-[selected=true]:text-zinc-100">
+            <SunIcon className="h-4 w-4" />
+            <Tabs.Indicator className="inset-0 rounded-full bg-white dark:bg-zinc-800" />
+          </Tabs.Tab>
+          <Tabs.Tab key="dark" className="rounded-full px-3 data-[selected=true]:bg-white data-[selected=true]:text-zinc-900 data-[selected=true]:shadow-sm dark:data-[selected=true]:bg-zinc-800 dark:data-[selected=true]:text-zinc-100">
+            <MoonIcon className="h-4 w-4" />
+            <Tabs.Indicator className="inset-0 rounded-full bg-white dark:bg-zinc-800" />
+          </Tabs.Tab>
         </Tabs.List>
       </Tabs.ListContainer>
     </Tabs>
