@@ -1,9 +1,6 @@
 import Link from "next/link";
 
-const socialLinks = [
-  { name: "GitHub", href: "https://github.com/zhangxuan", icon: <GitHubIcon /> },
-  { name: "Email", href: "mailto:zhangxuan.nyuk@gmail.com", icon: <MailIcon /> },
-];
+const socialLinks = [{ name: "Email", href: "mailto:zhangxuan.nyuk@gmail.com", icon: <MailIcon /> }];
 
 export function HomeHero() {
   return (
@@ -23,7 +20,7 @@ export function HomeHero() {
               <h1 className="text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl leading-[1.1]">
                 Hi, I&apos;m{" "}
                 <span className="bg-gradient-to-r from-accent to-[oklch(from_var(--accent)_calc(l+0.08)_calc(c*0.8)_calc(h-15))] bg-clip-text text-transparent">
-                  Blue
+                  张轩
                 </span>
                 .
               </h1>
@@ -41,12 +38,10 @@ export function HomeHero() {
                 Read the blog
               </Link>
               <a
-                href="https://github.com/zhangxuan"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:zhangxuan.nyuk@gmail.com"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-border/60 bg-card/90 px-7 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-border hover:bg-muted/70"
               >
-                GitHub
+                Email
               </a>
             </div>
           </div>
@@ -71,14 +66,6 @@ export function HomeHero() {
         </div>
       </section>
     </main>
-  );
-}
-
-function GitHubIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="size-[18px]">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.52c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-    </svg>
   );
 }
 

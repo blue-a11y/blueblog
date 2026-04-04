@@ -1,22 +1,22 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://blueblog.vercel.app";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://blueblog.me";
 
 export const siteConfig = {
   name: "BlueBlog",
   feedPath: "/feed.xml",
   title: "BlueBlog · Frontend engineering, design systems, and product craft",
   description:
-    "Blue's personal site for frontend engineering, design systems, interaction experiments, and quietly opinionated technical writing.",
-  shortDescription: "Frontend engineering, design systems, and quietly opinionated technical writing.",
-  author: "Blue",
+    "Personal site for 张轩, focused on frontend engineering, design systems, interaction experiments, and technical writing.",
+  shortDescription: "Frontend engineering, design systems, interaction experiments, and technical writing.",
+  author: "张轩",
   locale: "en_US",
   url: baseUrl.replace(/\/$/, ""),
   email: "zhangxuan.nyuk@gmail.com",
-  github: "https://github.com/zhangxuan",
   keywords: [
     "BlueBlog",
-    "Blue",
+    "张轩",
+    "zhangxuan",
     "frontend engineer",
     "Next.js blog",
     "React",

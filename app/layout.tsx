@@ -65,7 +65,6 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     images: [getOgImageUrl()],
-    creator: "@zhangxuan",
   },
   robots: {
     index: true,

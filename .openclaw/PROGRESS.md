@@ -64,7 +64,7 @@
 - [x] Phase 4 全量验收（响应式 / build / 页面一致性 / 截图归档）
 
 ### Phase 5：SEO + RSS + 搜索 + 性能优化 + 部署
-**状态**：🟡 进行中（SEO / RSS / 搜索最小可用版已落地，完成收尾验证并进入性能与部署准备） | **目标**：2-3 天 | **开始日期**：2026-04-04
+**状态**：🟡 进行中（SEO / RSS / 搜索 / 性能优化 / production 部署已落地；本轮已完成个人信息紧急清洗与重新上线） | **目标**：2-3 天 | **开始日期**：2026-04-04
 
 - [x] SEO 基线（站点级 metadata、canonical、Open Graph / Twitter、sitemap、robots.txt）
 - [x] RSS 生成
@@ -165,6 +165,15 @@
 - 验证通过：`npm run lint` ✅、`npm run build` ✅。由于仅增加根布局组件注入，且构建链路与类型检查均通过，本轮无需额外起 dev server 做重复体力活。
 - 部署状态：项目当前已接入 Vercel production，本轮已在仓库根目录完成新的 production deploy，deployment 为 `https://blueblog-d742fdgv5-blues-projects-90e3f68b.vercel.app`，公开站点 `https://blueblog-theta.vercel.app` 可正常访问；Vercel 还顺手把 `https://blueblog.me` alias 到了这次部署，但 SSL 证书仍在异步签发中。
 - 面板说明：代码已经上线。按官方接法接入后通常不需要再改代码；是否有数据展示取决于项目在 Vercel 上已有流量并启用对应的 Speed Insights 功能。如项目面板尚未启用 Speed Insights，用户可能仍需在 Vercel 面板里点一下开启。
+
+### 2026-04-04（周六）15:35 — Phase 5 第13轮：个人信息紧急清洗
+- 全局排查并清洗了站内错误身份信息：把源码里残留的 `Blue` 署名、`github.com/zhangxuan`、`@zhangxuan`、旧默认 canonical 域名 `blueblog.vercel.app` 全部揪出来处理。
+- `lib/site.ts` 现已改为以 `https://blueblog.me` 作为默认站点 URL，作者改为 **张轩**，站点描述改为真实用户信息，不再继续挂着别人的名字冒充本人。
+- 首页 `components/home-hero.tsx` 已把主视觉姓名从 `Blue` 改成 **张轩**，并移除没有得到确认的 GitHub 按钮 / 社交入口，只保留邮箱 `zhangxuan.nyuk@gmail.com`。
+- 关于页 `components/about/about-overview.tsx` 与 `app/about/page.tsx` 已移除未确认 GitHub 链接，并同步修正 About 页 metadata / OG 文案中的人名。
+- 项目页 `components/projects/project-showcase.tsx` 已去掉假的 GitHub 外链，改成站内安全链接；`app/layout.tsx`、`app/opengraph-image.tsx`、`app/twitter-image.tsx` 也移除了未确认的 Twitter / GitHub 标识，避免分享卡片继续带错人。
+- 验证通过：`npm run lint` ✅、`npm run build` ✅；`npm run dev -- --port 3050` 后实测 `/`、`/about`、`/blog`、`/projects`、`/feed.xml` 均返回 `200`，并确认首页 / About / Projects 页面源码中已不再出现 `github.com/zhangxuan`。
+- 下一步：提交、push，并重新部署 production，把这坨错信息彻底从线上抹掉。
 
 ### 2026-04-04（周六）15:05 — Phase 5 第9轮：首页主 CTA 按钮视觉修正已重新上线
 - 核查 `components/home-hero.tsx`，确认首页主 CTA 已从此前的旧按钮实现切换为直接指向 `/blog` 的 `Read the blog` 链接样式，使用 `border-accent/18 + bg-accent/12 + rounded-full` 的轻量主按钮视觉；问题不是代码没改，而是之前线上没重新部署到位。

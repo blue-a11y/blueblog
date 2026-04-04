@@ -26,7 +26,7 @@ const projects: Project[] = [
     stack: ["Next.js 15", "React 19", "HeroUI v3", "Tailwind CSS v4", "MDX"],
     links: [
       { label: "Read blog", href: "/blog" },
-      { label: "GitHub", href: "https://github.com/zhangxuan", external: true },
+      { label: "About", href: "/about" },
     ],
   },
   {

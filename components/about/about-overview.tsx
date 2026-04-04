@@ -42,9 +42,8 @@ const timeline: TimelineEntry[] = [
   },
 ];
 
-const contactLinks = [
+const contactLinks: { label: string; value: string; href: string; external?: boolean }[] = [
   { label: "Email", value: "zhangxuan.nyuk@gmail.com", href: "mailto:zhangxuan.nyuk@gmail.com" },
-  { label: "GitHub", value: "github.com/zhangxuan", href: "https://github.com/zhangxuan", external: true },
 ];
 
 export function AboutOverview() {

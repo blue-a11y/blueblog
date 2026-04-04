@@ -57,7 +57,7 @@ export default function TwitterImage() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 24, color: "rgba(248,251,255,0.6)" }}>
           <div>{siteConfig.url.replace(/^https?:\/\//, "")}</div>
-          <div>@zhangxuan</div>
+          <div>{siteConfig.author}</div>
         </div>
       </div>
     ),

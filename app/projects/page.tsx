@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "BlueBlog projects",
     description: "Selected product, frontend, and interaction work shipped across experiments and production surfaces.",
     url: "/projects",
-    images: [getOgImageUrl("Projects by Blue")],
+    images: [getOgImageUrl("Projects by 张轩")],
   },
 };
 

@@ -4,15 +4,15 @@ import { getOgImageUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Background, skills, selected experience, and contact details for Blue.",
+  description: "Background, skills, selected experience, and contact details for 张轩.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About Blue",
-    description: "Background, skills, selected experience, and contact details for Blue.",
+    title: "About 张轩",
+    description: "Background, skills, selected experience, and contact details for 张轩.",
     url: "/about",
-    images: [getOgImageUrl("About Blue")],
+    images: [getOgImageUrl("About 张轩")],
   },
 };
 

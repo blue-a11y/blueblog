@@ -89,7 +89,7 @@ export default async function OpenGraphImage({
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 24, color: "#52617a" }}>
           <div>{siteConfig.url.replace(/^https?:\/\//, "")}</div>
-          <div>{siteConfig.github.replace(/^https?:\/\//, "")}</div>
+          <div>{siteConfig.author}</div>
         </div>
       </div>
     ),
