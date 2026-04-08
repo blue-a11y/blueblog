@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router";
-import Layout from "./layout/Layout";
-import Home from "./pages/Home";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
-import Projects from "./pages/Projects";
-import Lab from "./pages/Lab";
-import About from "./pages/About";
+import Layout from "./layout/layout";
+import Home from "./pages/home";
+import Blog from "./pages/blog";
+import BlogDetail from "./pages/blog-detail";
+import Projects from "./pages/projects";
+import Lab from "./pages/lab";
+import About from "./pages/about";
 
 function App() {
   return (
