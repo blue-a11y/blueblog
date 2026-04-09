@@ -1,21 +1,21 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
+import type { IconType } from "react-icons";
 
-interface MenuItem {
-  icon: LucideIcon;
+export interface MenuItem {
+  icon: IconType;
   label: string;
   href: string;
   gradient: string;
   iconColor: string;
 }
 
-interface MenuBarProps {
+export interface MenuBarProps {
   className?: string;
   items: MenuItem[];
-  activeItem?: string;
-  onItemClick?: (label: string) => void;
+  active?: string;
+  onItemClick?: (item: MenuItem) => void;
 }
 
 const itemVariants = {
@@ -56,7 +56,7 @@ const sharedTransition = {
 };
 
 export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
-  ({ className, items, activeItem, onItemClick }, ref) => {
+  ({ className, items, active, onItemClick }, ref) => {
     return (
       <motion.nav
         ref={ref}
@@ -68,20 +68,17 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
         whileHover="hover"
       >
         <motion.div
-          className="bg-gradient-radial pointer-events-none absolute -inset-2 z-0 rounded-3xl from-transparent via-blue-400/20 via-purple-400/20 via-red-400/20 via-30% via-60% via-90% to-transparent"
+          className="bg-gradient-radial pointer-events-none absolute -inset-2 z-0 rounded-3xl from-transparent via-blue-400/20 via-30% to-transparent"
           variants={navGlowVariants}
         />
         <ul className="relative z-10 flex items-center gap-1">
           {items.map((item) => {
             const Icon = item.icon;
-            const isActive = item.label === activeItem;
+            const isActive = item.href === active;
 
             return (
               <motion.li key={item.label} className="relative">
-                <button
-                  onClick={() => onItemClick?.(item.label)}
-                  className="block w-full cursor-pointer"
-                >
+                <button onClick={() => onItemClick?.(item)} className="block w-full cursor-pointer">
                   <motion.div style={{ perspective: "600px" }} whileHover="hover" initial="initial">
                     <motion.div
                       className="pointer-events-none absolute inset-0 z-0"

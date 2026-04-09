@@ -1,12 +1,17 @@
-import { useState } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router";
-import { MenuBar } from "@/components/ui/glow-menu";
+import { MenuBar, type MenuItem } from "@/components/ui/glow-menu";
 import { GridBackground } from "@/components/ui/grid-background";
-import { Home, BookOpen, FolderKanban, FlaskConical, User } from "lucide-react";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { BiHome } from "react-icons/bi";
+import { FcAbout } from "react-icons/fc";
+import { RiBloggerFill } from "react-icons/ri";
+import { LuProjector } from "react-icons/lu";
+import { IoIosFlask } from "react-icons/io";
+import BLUE_AVATAR from "@/assets/blue-avatar.jpg";
 
 const menuItems = [
   {
-    icon: Home,
+    icon: BiHome,
     label: "首页",
     href: "/",
     gradient:
@@ -14,7 +19,7 @@ const menuItems = [
     iconColor: "text-indigo-500",
   },
   {
-    icon: BookOpen,
+    icon: RiBloggerFill,
     label: "博客",
     href: "/blog",
     gradient:
@@ -22,7 +27,7 @@ const menuItems = [
     iconColor: "text-orange-500",
   },
   {
-    icon: FolderKanban,
+    icon: LuProjector,
     label: "项目",
     href: "/projects",
     gradient:
@@ -30,7 +35,7 @@ const menuItems = [
     iconColor: "text-green-500",
   },
   {
-    icon: FlaskConical,
+    icon: IoIosFlask,
     label: "实验室",
     href: "/lab",
     gradient:
@@ -38,7 +43,7 @@ const menuItems = [
     iconColor: "text-purple-500",
   },
   {
-    icon: User,
+    icon: FcAbout,
     label: "关于",
     href: "/about",
     gradient:
@@ -49,36 +54,27 @@ const menuItems = [
 
 function Layout() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [activeItem, setActiveItem] = useState(
-    menuItems.find((item) => {
-      if (item.href === "/") {
-        return location.pathname === "/";
-      }
-      return location.pathname.startsWith(item.href);
-    })?.label ?? "首页",
-  );
 
-  const handleItemClick = (label: string) => {
-    setActiveItem(label);
-    const item = menuItems.find((i) => i.label === label);
-    if (item) {
-      navigate(item.href);
-    }
+  const { pathname } = useLocation();
+
+  const handleItemClick = ({ href }: MenuItem) => {
+    navigate(href);
   };
 
   return (
     <div className="relative min-h-svh">
       <GridBackground />
-      <header className="relative z-10">
-        <div className="mx-auto flex h-14 gap-10 items-center w-fit justify-between px-6">
-          <NavLink className="text-xl font-semibold text-foreground no-underline" to="/">
-            Blue
+      <header className="relative z-10 mt-2">
+        <div className="mx-auto flex h-14 w-fit items-center justify-between gap-10 px-6">
+          <NavLink to="/">
+            <Avatar size="lg" className="shadow-lg">
+              <AvatarImage src={BLUE_AVATAR} alt="@blue" />
+            </Avatar>
           </NavLink>
-          <MenuBar items={menuItems} activeItem={activeItem} onItemClick={handleItemClick} />
+          <MenuBar items={menuItems} active={pathname} onItemClick={handleItemClick} />
         </div>
       </header>
-      <main className="relative z-1 max-w-3/5 mx-auto">
+      <main className="relative z-1 mx-auto max-w-3/5">
         <Outlet />
       </main>
     </div>
