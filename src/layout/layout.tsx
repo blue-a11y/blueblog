@@ -62,9 +62,9 @@ function Layout() {
   };
 
   return (
-    <div className="relative min-h-svh">
+    <div className="flex min-h-svh flex-col">
       <GridBackground />
-      <header className="relative z-10 mt-2">
+      <header className="pt-2">
         <div className="mx-auto flex h-14 w-fit items-center justify-between gap-10 px-6">
           <NavLink to="/">
             <Avatar size="lg" className="shadow-lg">
@@ -74,7 +74,7 @@ function Layout() {
           <MenuBar items={menuItems} active={pathname} onItemClick={handleItemClick} />
         </div>
       </header>
-      <main className="relative z-1 mx-auto max-w-3/5">
+      <main className="mx-auto flex w-3/5 grow flex-col">
         <Outlet />
       </main>
     </div>

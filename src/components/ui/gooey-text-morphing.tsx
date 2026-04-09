@@ -16,7 +16,7 @@ export function GooeyText({
   morphTime = 1,
   cooldownTime = 0.25,
   className,
-  textClassName
+  textClassName,
 }: GooeyTextProps) {
   const text1Ref = React.useRef<HTMLSpanElement>(null);
   const text2Ref = React.useRef<HTMLSpanElement>(null);
@@ -108,24 +108,21 @@ export function GooeyText({
         </defs>
       </svg>
 
-      <div
-        className="flex items-center justify-center"
-        style={{ filter: "url(#threshold)" }}
-      >
+      <div className="flex items-center justify-center" style={{ filter: "url(#threshold)" }}>
         <span
           ref={text1Ref}
           className={cn(
-            "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
+            "absolute inline-block text-center text-6xl select-none",
             "text-foreground",
-            textClassName
+            textClassName,
           )}
         />
         <span
           ref={text2Ref}
           className={cn(
-            "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
+            "absolute inline-block text-center text-6xl select-none",
             "text-foreground",
-            textClassName
+            textClassName,
           )}
         />
       </div>
