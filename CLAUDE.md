@@ -45,11 +45,11 @@ src/
 ├── pages/              — 路由页面组件（按路由拆分目录）
 │   ├── home/
 │   │   ├── index.tsx      页面入口
-│   │   ├── components/    页面私有子组件
+│   │   ├── views/         页面私有视图拆分
 │   │   └── hooks/         页面私有 hooks
 │   └── blog/
 │       ├── index.tsx
-│       └── components/
+│       └── views/
 ├── stores/             — 全局状态管理（按模块拆分）
 ├── styles/             — 全局样式文件（theme、reset、全局 CSS）
 ├── types/              — 全局公共类型定义（按模块拆分）
@@ -58,7 +58,7 @@ src/
 └── main.tsx            — 入口文件（挂载根节点）
 ```
 
-**文件归属原则：** 仅单个页面使用的组件/hooks/类型/常量，放在该页面目录内的子目录中；两处以上使用则提升到对应的公共目录。
+**文件归属原则：** `src/components/` 仅放全局可复用组件。仅单个页面使用的视图拆分、hooks、类型、常量，放在该页面目录内的子目录中；其中页面私有视图统一放在 `views/` 下。两处以上使用则提升到对应的公共目录。
 
 样式：Tailwind CSS v4，自定义 design tokens 定义在 `src/index.css`。主题使用 OKLCH 色彩空间，通过 `.dark` 类实现深色模式。所有组件样式使用 Tailwind 工具类，不使用单独的 CSS 文件。
 
@@ -85,6 +85,7 @@ src/
 **添加组件：** `pnpm dlx shadcn@latest add <component>`，组件将自动安装到 `src/components/ui/` 目录。
 
 **注意事项：**
+
 - shadcn 生成的代码可能使用 `function` 声明和 `interface`，添加后需按编码规范调整为箭头函数 + `type`
 - shadcn 组件的 import 路径别名使用 `@/` 前缀（已在 `components.json` 中配置）
 - 不要修改 shadcn 组件的核心逻辑，只做风格适配
