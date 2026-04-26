@@ -22,7 +22,7 @@ type ITextTypeProps<T extends ElementType = "span"> = Omit<
   ComponentPropsWithoutRef<T>,
   "children"
 > & {
-  text: string | string[];
+  text: string | readonly string[];
   as?: T;
   typingSpeed?: number;
   initialDelay?: number;

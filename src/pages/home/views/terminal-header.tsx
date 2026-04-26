@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { TextType } from "@/components/ui/text-type";
-import { commands } from "@/pages/home/constants";
+import { homeContent } from "@/pages/home/constants/content";
 
 const TerminalHeader = () => {
   return (
@@ -17,7 +17,7 @@ const TerminalHeader = () => {
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
         />
         <TextType
-          text="blue@dev ~"
+          text={homeContent.terminal.prompt}
           initialDelay={80}
           typingSpeed={42}
           loop={false}
@@ -29,7 +29,7 @@ const TerminalHeader = () => {
       </div>
       <span className="min-w-28 text-right">
         <TextType
-          text={commands}
+          text={homeContent.terminal.commands}
           typingSpeed={70}
           deletingSpeed={35}
           pauseDuration={1600}
