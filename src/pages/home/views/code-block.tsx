@@ -14,9 +14,12 @@ const codeTones = homeContent.code.snippets.map(({ tone }) => {
 const codeBlock = (
   <motion.div
     variants={itemVariants}
-    className="mx-auto mt-10 w-full max-w-xl rounded-xl border border-white/10 p-4 text-left font-mono text-xs shadow-[0_18px_70px_rgba(0,0,0,0.34)] sm:text-sm"
+    className="mx-auto mt-8 w-full max-w-xl rounded-xl border border-white/10 p-3 text-left font-mono text-[11px] shadow-[0_18px_70px_rgba(0,0,0,0.34)] sm:mt-10 sm:p-4 sm:text-sm"
   >
-    <motion.div variants={codeLineVariants} className="grid grid-cols-[2rem_1fr] gap-3 leading-7">
+    <motion.div
+      variants={codeLineVariants}
+      className="grid grid-cols-[1.6rem_1fr] gap-2.5 leading-6 sm:grid-cols-[2rem_1fr] sm:gap-3 sm:leading-7"
+    >
       <TextType
         text={homeContent.code.prompt}
         className="text-slate-600 select-none"

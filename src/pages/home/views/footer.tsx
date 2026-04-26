@@ -4,7 +4,7 @@ import { homeContent } from "@/pages/home/constants/content";
 import { itemVariants } from "@/pages/home/constants/motion";
 
 const footer = (
-  <motion.p variants={itemVariants} className="mt-5 font-mono text-xs text-slate-600">
+  <motion.p variants={itemVariants} className="mt-4 font-mono text-[11px] text-slate-600 sm:mt-5 sm:text-xs">
     <TextType
       text={homeContent.footer}
       initialDelay={4200}

@@ -4,7 +4,7 @@ import { homeContent } from "@/pages/home/constants/content";
 
 const TerminalHeader = () => {
   return (
-    <div className="relative flex items-center justify-between gap-4 overflow-hidden border-b border-white/10 px-5 py-4 font-mono text-xs text-slate-500">
+    <div className="relative flex items-center justify-between gap-3 overflow-hidden border-b border-white/10 px-4 py-3 font-mono text-[11px] text-slate-500 sm:gap-4 sm:px-5 sm:py-4 sm:text-xs">
       <motion.div
         className="pointer-events-none absolute bottom-0 left-0 h-px w-1/5 rounded-full bg-linear-to-r from-blue-300/10 via-blue-300/80 to-blue-300/10 opacity-75"
         animate={{ x: ["0%", "400%", "0%"] }}
@@ -27,7 +27,7 @@ const TerminalHeader = () => {
           reserveSpace
         />
       </div>
-      <span className="min-w-28 text-right">
+      <span className="min-w-20 text-right sm:min-w-28">
         <TextType
           text={homeContent.terminal.commands}
           typingSpeed={70}

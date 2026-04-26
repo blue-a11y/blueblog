@@ -11,7 +11,7 @@ import { socialLinksSection } from "@/pages/home/views/social-links";
 import { TerminalHeader } from "@/pages/home/views/terminal-header";
 
 const intro = (
-  <motion.p variants={itemVariants} className="min-h-5 font-mono text-sm text-slate-500">
+  <motion.p variants={itemVariants} className="min-h-4 font-mono text-xs text-slate-500 sm:min-h-5 sm:text-sm">
     <SplitText
       text={homeContent.intro}
       delay={0.24}
@@ -25,7 +25,7 @@ const intro = (
 const title = (
   <motion.h1
     variants={itemVariants}
-    className="font-terminal-display mx-auto mt-7 min-h-[1.12em] max-w-3xl text-5xl text-white sm:text-7xl"
+    className="font-terminal-display mx-auto mt-5 min-h-[1.12em] max-w-3xl text-4xl text-white sm:mt-7 sm:text-7xl"
   >
     <TextType
       text={homeContent.title.text}
@@ -42,7 +42,7 @@ const title = (
 );
 
 const divider = (
-  <motion.div variants={itemVariants} className="mx-auto mt-8 h-px w-8 bg-slate-500/80" />
+  <motion.div variants={itemVariants} className="mx-auto mt-6 h-px w-8 bg-slate-500/80 sm:mt-8" />
 );
 
 const Home = () => {
@@ -50,7 +50,7 @@ const Home = () => {
 
   return (
     <motion.div
-      className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 py-8 text-slate-100"
+      className="relative flex min-h-svh items-center justify-center overflow-hidden px-3 py-4 text-slate-100 sm:px-4 sm:py-8"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
@@ -64,7 +64,7 @@ const Home = () => {
         className="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-white/12 bg-[#090c14]/20 shadow-[0_28px_120px_rgba(0,0,0,0.52)] backdrop-blur-3xl select-none"
       >
         <TerminalHeader />
-        <section className="relative px-6 py-20 text-center sm:px-10 sm:py-24">
+        <section className="relative px-4 py-12 text-center sm:px-10 sm:py-24">
           {intro}
           {title}
           {divider}
