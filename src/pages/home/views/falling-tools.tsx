@@ -57,10 +57,11 @@ type IFallingToolsProps = {
 };
 
 const MIN_SPAWN_X_PADDING = 32;
-const SPAWN_Y_OFFSET = 40;
-const MIN_SPAWN_HEIGHT = 120;
+const MIN_SPAWN_Y_PADDING = 32;
+const SPAWN_HEIGHT_RATIO = 0.36;
 const INITIAL_X_VELOCITY = 2.6;
 const INITIAL_ANGLE_RANGE = 0.2;
+const WALL_THICKNESS = 140;
 const DEVICE_ORIENTATION_PERMISSION_EVENTS = ["pointerdown", "touchstart", "keydown"] as const;
 
 const clamp = (value: number, min: number, max: number) => {
@@ -108,7 +109,9 @@ const applyTiltGravity = (
 
 const respawnBody = (body: IMatterBody, width: number, height: number) => {
   const x = MIN_SPAWN_X_PADDING + Math.random() * Math.max(width - MIN_SPAWN_X_PADDING * 2, 1);
-  const y = -SPAWN_Y_OFFSET - Math.random() * Math.max(height * 0.4, MIN_SPAWN_HEIGHT);
+  const y =
+    MIN_SPAWN_Y_PADDING +
+    Math.random() * Math.max(height * SPAWN_HEIGHT_RATIO - MIN_SPAWN_Y_PADDING, 1);
 
   Body.setPosition(body, { x, y });
   Body.setVelocity(body, {
@@ -206,7 +209,18 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
         Composite.remove(engine.world, wallsRef.current);
       }
 
-      const thickness = 140;
+      const thickness = WALL_THICKNESS;
+      const ceiling = Bodies.rectangle(
+        width / 2,
+        -thickness / 2,
+        width + thickness * 2,
+        thickness,
+        {
+          isStatic: true,
+          restitution: config.restitution,
+          friction: 0.02,
+        },
+      );
       const floor = Bodies.rectangle(
         width / 2,
         height + thickness / 2,
@@ -239,7 +253,7 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
         },
       );
 
-      wallsRef.current = [floor, leftWall, rightWall];
+      wallsRef.current = [ceiling, floor, leftWall, rightWall];
       Composite.add(engine.world, wallsRef.current);
     };
 
