@@ -36,6 +36,7 @@ const homeFallingToolsConfig: IFallingToolsConfig = {
   itemSize: 46,
   startDelayMs: 1000,
   gravity: 0.72,
+  tiltSensitivity: 55,
   restitution: 0.82,
   frictionAir: 0.012,
   collisionPadding: 0,

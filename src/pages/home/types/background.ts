@@ -13,6 +13,7 @@ type IFallingToolsConfig = {
   itemSize: number;
   startDelayMs: number;
   gravity: number;
+  tiltSensitivity: number;
   restitution: number;
   frictionAir: number;
   collisionPadding: number;
