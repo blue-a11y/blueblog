@@ -21,6 +21,19 @@ type IMatterBody = {
 
 type IMatterEngine = {
   world: object;
+  gravity: {
+    x: number;
+    y: number;
+    scale: number;
+  };
+};
+
+type IDeviceOrientationEventWithPermission = typeof DeviceOrientationEvent & {
+  requestPermission?: () => Promise<PermissionState>;
+};
+
+type IScreenOrientationWithAngle = ScreenOrientation & {
+  angle?: number;
 };
 
 type ISeededTool = {
@@ -43,17 +56,67 @@ type IFallingToolsProps = {
   obstacleRef?: RefObject<HTMLElement | null>;
 };
 
+const MIN_SPAWN_X_PADDING = 32;
+const SPAWN_Y_OFFSET = 40;
+const MIN_SPAWN_HEIGHT = 120;
+const INITIAL_X_VELOCITY = 2.6;
+const INITIAL_ANGLE_RANGE = 0.2;
+const DEVICE_ORIENTATION_PERMISSION_EVENTS = ["pointerdown", "touchstart", "keydown"] as const;
+
+const clamp = (value: number, min: number, max: number) => {
+  return Math.min(Math.max(value, min), max);
+};
+
+const getScreenAngle = () => {
+  const orientation = window.screen.orientation as IScreenOrientationWithAngle | undefined;
+
+  return orientation?.angle ?? 0;
+};
+
+const hasDeviceTilt = (event: DeviceOrientationEvent) => {
+  return event.beta !== null || event.gamma !== null;
+};
+
+const getViewportTilt = (event: DeviceOrientationEvent) => {
+  const beta = event.beta ?? 0;
+  const gamma = event.gamma ?? 0;
+  const angle = (getScreenAngle() * Math.PI) / 180;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+
+  return {
+    x: gamma * cos + beta * sin,
+    y: beta * cos - gamma * sin,
+  };
+};
+
+const applyTiltGravity = (
+  engine: IMatterEngine,
+  event: DeviceOrientationEvent,
+  gravity: number,
+  tiltSensitivity: number,
+) => {
+  if (!hasDeviceTilt(event)) {
+    return;
+  }
+
+  const viewportTilt = getViewportTilt(event);
+
+  engine.gravity.x = clamp(viewportTilt.x / tiltSensitivity, -1, 1) * gravity;
+  engine.gravity.y = clamp(viewportTilt.y / tiltSensitivity, -1, 1) * gravity;
+};
+
 const respawnBody = (body: IMatterBody, width: number, height: number) => {
-  const x = 32 + Math.random() * Math.max(width - 64, 1);
-  const y = -40 - Math.random() * Math.max(height * 0.4, 120);
+  const x = MIN_SPAWN_X_PADDING + Math.random() * Math.max(width - MIN_SPAWN_X_PADDING * 2, 1);
+  const y = -SPAWN_Y_OFFSET - Math.random() * Math.max(height * 0.4, MIN_SPAWN_HEIGHT);
 
   Body.setPosition(body, { x, y });
   Body.setVelocity(body, {
-    x: (Math.random() - 0.5) * 2.6,
+    x: (Math.random() - 0.5) * INITIAL_X_VELOCITY,
     y: Math.random() * 0.6,
   });
   Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04);
-  Body.setAngle(body, (Math.random() - 0.5) * 0.2);
+  Body.setAngle(body, (Math.random() - 0.5) * INITIAL_ANGLE_RANGE);
 };
 
 const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
@@ -92,6 +155,51 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
       gravity: { x: 0, y: config.gravity, scale: 0.001 },
     });
     engineRef.current = engine;
+    let isDeviceOrientationStarted = false;
+
+    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      applyTiltGravity(engine, event, config.gravity, config.tiltSensitivity);
+    };
+
+    const startDeviceOrientation = () => {
+      if (isDeviceOrientationStarted) {
+        return;
+      }
+
+      isDeviceOrientationStarted = true;
+      window.addEventListener("deviceorientation", handleDeviceOrientation);
+    };
+
+    const requestDeviceOrientationPermission = () => {
+      const DeviceOrientationEventWithPermission = window.DeviceOrientationEvent as
+        | IDeviceOrientationEventWithPermission
+        | undefined;
+
+      DEVICE_ORIENTATION_PERMISSION_EVENTS.forEach((eventName) => {
+        window.removeEventListener(eventName, requestDeviceOrientationPermission);
+      });
+
+      if (!DeviceOrientationEventWithPermission?.requestPermission) {
+        startDeviceOrientation();
+        return;
+      }
+
+      void DeviceOrientationEventWithPermission.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            startDeviceOrientation();
+          }
+        })
+        .catch(() => {
+          engine.gravity.x = 0;
+          engine.gravity.y = config.gravity;
+        });
+    };
+
+    DEVICE_ORIENTATION_PERMISSION_EVENTS.forEach((eventName) => {
+      window.addEventListener(eventName, requestDeviceOrientationPermission, { once: true });
+    });
+    startDeviceOrientation();
 
     const updateBounds = (width: number, height: number) => {
       if (wallsRef.current.length > 0) {
@@ -99,15 +207,27 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
       }
 
       const thickness = 140;
-      const floor = Bodies.rectangle(width / 2, height + thickness / 2, width + thickness * 2, thickness, {
-        isStatic: true,
-        restitution: config.restitution,
-        friction: 0.02,
-      });
-      const leftWall = Bodies.rectangle(-thickness / 2, height / 2, thickness, height + thickness * 2, {
-        isStatic: true,
-        restitution: config.restitution,
-      });
+      const floor = Bodies.rectangle(
+        width / 2,
+        height + thickness / 2,
+        width + thickness * 2,
+        thickness,
+        {
+          isStatic: true,
+          restitution: config.restitution,
+          friction: 0.02,
+        },
+      );
+      const leftWall = Bodies.rectangle(
+        -thickness / 2,
+        height / 2,
+        thickness,
+        height + thickness * 2,
+        {
+          isStatic: true,
+          restitution: config.restitution,
+        },
+      );
       const rightWall = Bodies.rectangle(
         width + thickness / 2,
         height / 2,
@@ -255,6 +375,10 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
     return () => {
       window.clearTimeout(startTimeoutRef.current);
       window.cancelAnimationFrame(animationFrameRef.current);
+      window.removeEventListener("deviceorientation", handleDeviceOrientation);
+      DEVICE_ORIENTATION_PERMISSION_EVENTS.forEach((eventName) => {
+        window.removeEventListener(eventName, requestDeviceOrientationPermission);
+      });
       resizeObserver.disconnect();
       Composite.clear(engine.world, false);
       engineRef.current = null;
@@ -266,6 +390,7 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
     config.count,
     config.frictionAir,
     config.gravity,
+    config.tiltSensitivity,
     config.itemSize,
     config.items,
     config.startDelayMs,
