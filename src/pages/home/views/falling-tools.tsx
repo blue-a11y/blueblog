@@ -57,8 +57,8 @@ type IFallingToolsProps = {
 };
 
 const MIN_SPAWN_X_PADDING = 32;
-const MIN_SPAWN_Y_PADDING = 32;
-const SPAWN_HEIGHT_RATIO = 0.36;
+const SPAWN_Y_OFFSET = 40;
+const MIN_SPAWN_HEIGHT = 120;
 const INITIAL_X_VELOCITY = 2.6;
 const INITIAL_ANGLE_RANGE = 0.2;
 const WALL_THICKNESS = 140;
@@ -109,9 +109,7 @@ const applyTiltGravity = (
 
 const respawnBody = (body: IMatterBody, width: number, height: number) => {
   const x = MIN_SPAWN_X_PADDING + Math.random() * Math.max(width - MIN_SPAWN_X_PADDING * 2, 1);
-  const y =
-    MIN_SPAWN_Y_PADDING +
-    Math.random() * Math.max(height * SPAWN_HEIGHT_RATIO - MIN_SPAWN_Y_PADDING, 1);
+  const y = -SPAWN_Y_OFFSET - Math.random() * Math.max(height * 0.4, MIN_SPAWN_HEIGHT);
 
   Body.setPosition(body, { x, y });
   Body.setVelocity(body, {
@@ -159,8 +157,18 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
     });
     engineRef.current = engine;
     let isDeviceOrientationStarted = false;
+    let isCeilingActive = false;
+    let latestDeviceOrientation: DeviceOrientationEvent | null = null;
+    let sceneWidth = 1;
+    let sceneHeight = 1;
 
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      latestDeviceOrientation = event;
+
+      if (!isCeilingActive) {
+        return;
+      }
+
       applyTiltGravity(engine, event, config.gravity, config.tiltSensitivity);
     };
 
@@ -204,23 +212,12 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
     });
     startDeviceOrientation();
 
-    const updateBounds = (width: number, height: number) => {
+    const updateBounds = (width: number, height: number, includeCeiling: boolean) => {
       if (wallsRef.current.length > 0) {
         Composite.remove(engine.world, wallsRef.current);
       }
 
       const thickness = WALL_THICKNESS;
-      const ceiling = Bodies.rectangle(
-        width / 2,
-        -thickness / 2,
-        width + thickness * 2,
-        thickness,
-        {
-          isStatic: true,
-          restitution: config.restitution,
-          friction: 0.02,
-        },
-      );
       const floor = Bodies.rectangle(
         width / 2,
         height + thickness / 2,
@@ -253,8 +250,46 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
         },
       );
 
-      wallsRef.current = [ceiling, floor, leftWall, rightWall];
+      wallsRef.current = [floor, leftWall, rightWall];
+
+      if (includeCeiling) {
+        const ceiling = Bodies.rectangle(
+          width / 2,
+          -thickness / 2,
+          width + thickness * 2,
+          thickness,
+          {
+            isStatic: true,
+            restitution: config.restitution,
+            friction: 0.02,
+          },
+        );
+
+        wallsRef.current.unshift(ceiling);
+      }
+
       Composite.add(engine.world, wallsRef.current);
+    };
+
+    const activateCeilingWhenToolsEnter = () => {
+      if (isCeilingActive || toolBodiesRef.current.length === 0) {
+        return;
+      }
+
+      const allToolsEntered = toolBodiesRef.current.every((tool) => {
+        return tool.body.position.y >= tool.size / 2;
+      });
+
+      if (!allToolsEntered) {
+        return;
+      }
+
+      isCeilingActive = true;
+      updateBounds(sceneWidth, sceneHeight, true);
+
+      if (latestDeviceOrientation) {
+        applyTiltGravity(engine, latestDeviceOrientation, config.gravity, config.tiltSensitivity);
+      }
     };
 
     const updateObstacle = () => {
@@ -341,11 +376,16 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
       const rect = container.getBoundingClientRect();
       const width = Math.max(rect.width, 1);
       const height = Math.max(rect.height, 1);
+      sceneWidth = width;
+      sceneHeight = height;
+      isCeilingActive = false;
+      engine.gravity.x = 0;
+      engine.gravity.y = config.gravity;
 
       Composite.clear(engine.world, false);
       obstacleBodyRef.current = null;
       obstacleSizeRef.current = { width: 0, height: 0 };
-      updateBounds(width, height);
+      updateBounds(width, height, false);
       updateObstacle();
 
       toolBodiesRef.current = seededTools.map((_, index) => {
@@ -377,6 +417,7 @@ const FallingTools = ({ obstacleRef }: IFallingToolsProps) => {
       lastTime = time;
       updateObstacle();
       Engine.update(engine, delta);
+      activateCeilingWhenToolsEnter();
       syncDomPositions();
 
       animationFrameRef.current = window.requestAnimationFrame(tick);
