@@ -1,75 +1,55 @@
-# React + TypeScript + Vite
+# blueblog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+blue 的个人博客前端项目。
 
-Currently, two official plugins are available:
+## 技术栈
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **TypeScript 6** + **Vite 8**
+- **React Compiler** — 自动记忆化优化
+- **react-router 7** — 客户端路由
+- **Tailwind CSS v4** — OKLCH 色彩空间、@theme inline 指令
+- **framer-motion** — 动画库
+- **shadcn/ui** — UI 基础组件
+- **pnpm** — 包管理器
 
-## React Compiler
+## 开发
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+```bash
+# 安装依赖
+pnpm install
 
-Note: This will impact Vite dev & build performances.
+# 启动开发服务器
+pnpm dev
 
-## Expanding the ESLint configuration
+# 构建生产包
+pnpm build
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# 预览生产构建
+pnpm preview
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+# ESLint 检查
+pnpm lint
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+# 格式化代码
+pnpm format
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 项目结构
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```
+src/
+├── api/          — 接口请求层
+├── assets/       — 静态资源
+├── components/   — 全局组件（ui / business）
+├── hooks/        — 业务自定义 Hooks
+├── layout/       — 页面布局
+├── lib/          — 第三方库封装
+├── helpers/      — 通用工具函数
+├── pages/        — 路由页面（按页面拆分目录）
+├── stores/       — 全局状态管理
+├── styles/       — 全局样式
+├── types/        — 公共类型
+├── constants/    — 全局常量
+├── App.tsx       — 根组件（路由配置）
+└── main.tsx      — 入口文件
 ```
