@@ -37,19 +37,20 @@ pnpm format
 ## 项目结构
 
 ```
+public/                 — 静态资源（头像、图标）
 src/
-├── api/          — 接口请求层
-├── assets/       — 静态资源
-├── components/   — 全局组件（ui / business）
-├── hooks/        — 业务自定义 Hooks
-├── layout/       — 页面布局
-├── lib/          — 第三方库封装
-├── helpers/      — 通用工具函数
-├── pages/        — 路由页面（按页面拆分目录）
-├── stores/       — 全局状态管理
-├── styles/       — 全局样式
-├── types/        — 公共类型
-├── constants/    — 全局常量
-├── App.tsx       — 根组件（路由配置）
-└── main.tsx      — 入口文件
+├── components/
+│   └── ui/             — 可复用动画与视觉组件
+├── layout/             — 页面布局
+├── lib/                — 通用工具函数
+├── pages/
+│   └── home/
+│       ├── constants/  — 首页内容与动效配置
+│       ├── types/      — 首页私有类型
+│       ├── views/      — 首页视图组件
+│       └── index.tsx   — 首页入口
+├── types/              — 第三方库类型声明
+├── App.tsx             — 根组件（路由配置）
+├── index.css           — 全局样式与主题
+└── main.tsx            — 入口文件
 ```
